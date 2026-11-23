@@ -12,22 +12,22 @@ export const BookCover: React.FC<BookCoverProps> = ({ src, title, category }) =>
 
   if (failed || !src) {
     return (
-      <div className="aspect-[3/4] w-full rounded border border-[#E2E0D8] bg-[#F3F1EA] p-6 flex flex-col justify-between">
-        <span className="text-xs font-mono tracking-wide text-[#57554F]">{category}</span>
+      <div className="aspect-[3/4] w-full rounded-lg border border-[#DDE2EA] bg-[#F6F7F9] p-6 flex flex-col justify-between">
+        <span className="text-xs font-mono tracking-wide text-[#4E5869]">{category}</span>
         <div>
-          <BookOpen className="w-7 h-7 text-[#D94E1F] mb-3" strokeWidth={1.5} />
-          <p className="font-serif text-xl font-semibold text-[#141413] leading-snug">{title}</p>
+          <BookOpen className="w-7 h-7 text-[#1D4ED8] mb-3" strokeWidth={1.5} />
+          <p className="font-serif text-xl font-semibold text-[#0F141E] leading-snug">{title}</p>
         </div>
-        <span className="text-xs text-[#57554F]">James Walker AI Edition</span>
+        <span className="text-xs text-[#4E5869]">James Walker AI Edition</span>
       </div>
     );
   }
 
   return (
-    <div className="aspect-[3/4] w-full overflow-hidden rounded border border-[#E2E0D8] bg-[#F3F1EA]">
+    <div className="aspect-[3/4] w-full overflow-hidden rounded-lg border border-[#DDE2EA] bg-[#F6F7F9]">
       <img
         src={src}
-        alt={`Letterpress cover art for ${title}`}
+        alt={`Editorial cover art for ${title}`}
         referrerPolicy="no-referrer"
         loading="eager"
         onError={() => setFailed(true)}

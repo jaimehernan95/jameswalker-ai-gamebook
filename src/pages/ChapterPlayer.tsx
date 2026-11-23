@@ -240,14 +240,14 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
   if (error || !chapter || !activeNode) {
     return (
       <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-        <div className="border border-[#E2E0D8] bg-white rounded-lg p-6 sm:p-8">
-          <p className="text-xs font-mono uppercase tracking-wider text-[#D94E1F] mb-2">
+        <div className="border border-[#DDE2EA] bg-white rounded-lg p-6 sm:p-8">
+          <p className="text-xs font-mono uppercase tracking-wider text-[#1D4ED8] mb-2">
             Access Notice
           </p>
-          <h1 className="font-serif text-2xl font-semibold text-[#141413] mb-3">
+          <h1 className="font-serif text-2xl font-semibold text-[#0F141E] mb-3">
             {error || 'No active chapter selected.'}
           </h1>
-          <p className="text-[16px] text-[#57554F] mb-6 leading-relaxed">
+          <p className="text-[16px] text-[#4E5869] mb-6 leading-relaxed">
             Chapter 1 of every playbook is free to play. Enter a Gumroad unlock code to access
             full-book chapters, or return to the shelf to start any free preview.
           </p>
@@ -255,14 +255,14 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
             <button
               type="button"
               onClick={onBackToShelf}
-              className="min-h-[44px] px-4 py-2.5 bg-[#141413] text-[#FAF9F6] text-sm font-medium rounded-md hover:bg-[#D94E1F] transition-colors whitespace-nowrap cursor-pointer"
+              className="min-h-[44px] px-4 py-2.5 bg-[#0F141E] text-[#F6F7F9] text-sm font-medium rounded-md hover:bg-[#1D4ED8] transition-colors whitespace-nowrap cursor-pointer"
             >
               Back to Book Shelf
             </button>
             <button
               type="button"
               onClick={onOpenVault}
-              className="min-h-[44px] px-4 py-2.5 border border-[#E2E0D8] bg-white text-[#141413] text-sm font-medium rounded-md hover:border-[#141413] transition-colors whitespace-nowrap cursor-pointer"
+              className="min-h-[44px] px-4 py-2.5 border border-[#DDE2EA] bg-white text-[#0F141E] text-sm font-medium rounded-md hover:border-[#0F141E] transition-colors whitespace-nowrap cursor-pointer"
             >
               Enter Unlock Code
             </button>
@@ -365,7 +365,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
         <button
           type="button"
           onClick={onBackToShelf}
-          className="min-h-[40px] inline-flex items-center gap-2 text-sm font-medium text-[#57554F] hover:text-[#141413] transition-colors cursor-pointer"
+          className="min-h-[40px] inline-flex items-center gap-2 text-sm font-medium text-[#4E5869] hover:text-[#0F141E] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Book Shelf</span>
@@ -376,7 +376,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
             <button
               type="button"
               onClick={onStopDemo}
-              className="min-h-[38px] px-3 py-1.5 text-xs font-semibold bg-[#D94E1F] text-[#FAF9F6] rounded border border-[#D94E1F] hover:bg-[#B83E16] transition-colors whitespace-nowrap cursor-pointer"
+              className="min-h-[38px] px-3 py-1.5 text-xs font-semibold bg-[#1D4ED8] text-[#F6F7F9] rounded border border-[#1D4ED8] hover:bg-[#1E40AF] transition-colors whitespace-nowrap cursor-pointer"
             >
               Stop Simulation Preview
             </button>
@@ -385,7 +385,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
               <button
                 type="button"
                 onClick={onStartDemo}
-                className="min-h-[38px] px-3 py-1.5 text-xs font-medium bg-white text-[#141413] border border-[#E2E0D8] rounded hover:border-[#D94E1F] hover:text-[#D94E1F] transition-colors inline-flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+                className="min-h-[38px] px-3 py-1.5 text-xs font-medium bg-white text-[#0F141E] border border-[#DDE2EA] rounded hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors inline-flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
               >
                 <Play className="w-3.5 h-3.5" />
                 <span>Auto-Play Simulation Preview</span>
@@ -406,7 +406,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                   normalizeHud(chapter.initial_hud),
                 );
               }}
-              className="min-h-[38px] px-3 py-1.5 text-xs font-medium bg-white text-[#57554F] border border-[#E2E0D8] rounded hover:border-[#141413] hover:text-[#141413] inline-flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+              className="min-h-[38px] px-3 py-1.5 text-xs font-medium bg-white text-[#4E5869] border border-[#DDE2EA] rounded hover:border-[#0F141E] hover:text-[#0F141E] inline-flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Restart</span>
@@ -418,14 +418,14 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
       {/* 1. LIVE SIMULATION HUD (Replaces plain reading header) */}
       <section
         aria-label="Simulation HUD"
-        className="border border-[#141413] bg-white rounded-lg p-4 sm:p-5 mb-7"
+        className="border border-[#0F141E] bg-white rounded-lg p-4 sm:p-5 mb-7"
       >
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 mb-4 border-b border-[#E2E0D8]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 mb-4 border-b border-[#DDE2EA]">
           <div>
-            <div className="text-xs font-mono text-[#57554F] mb-1">
+            <div className="text-xs font-mono text-[#4E5869] mb-1">
               {chapter.book_title} · {activeNode.stepLabel} · {progress.xp} XP
             </div>
-            <h1 className="font-serif text-xl sm:text-2xl font-semibold text-[#141413]">
+            <h1 className="font-serif text-xl sm:text-2xl font-semibold text-[#0F141E]">
               {chapter.title}
             </h1>
           </div>
@@ -441,11 +441,11 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                   onClick={() => !demoMode && onSwitchChapter(chapter.book_slug, toc.chapter_num)}
                   className={`min-h-[38px] px-3 py-1.5 text-xs font-medium rounded border transition-colors whitespace-nowrap shrink-0 inline-flex items-center gap-1.5 cursor-pointer ${
                     isCurrent
-                      ? 'bg-[#141413] text-[#FAF9F6] border-[#141413]'
-                      : 'bg-[#FAF9F6] text-[#57554F] border-[#E2E0D8] hover:border-[#141413] hover:text-[#141413]'
+                      ? 'bg-[#0F141E] text-[#F6F7F9] border-[#0F141E]'
+                      : 'bg-[#F6F7F9] text-[#4E5869] border-[#DDE2EA] hover:border-[#0F141E] hover:text-[#0F141E]'
                   }`}
                 >
-                  {!accessible && <Lock className="w-3 h-3 text-[#D94E1F]" />}
+                  {!accessible && <Lock className="w-3 h-3 text-[#1D4ED8]" />}
                   <span>Ch. {toc.chapter_num}</span>
                 </button>
               );
@@ -458,26 +458,26 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
           {/* Stakeholder Trust Meter */}
           <div>
             <div className="flex items-baseline justify-between gap-2 mb-1.5">
-              <span className="text-xs font-medium text-[#57554F] inline-flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#141413]" />
+              <span className="text-xs font-medium text-[#4E5869] inline-flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#0F141E]" />
                 <span>Stakeholder Trust</span>
               </span>
               <div className="flex items-baseline gap-2 font-mono tabular-nums">
                 {activeDelta && activeDelta.trust !== 0 && (
                   <span
                     className={`text-[11px] font-semibold transition-opacity ${
-                      activeDelta.trust > 0 ? 'text-[#D94E1F]' : 'text-[#57554F]'
+                      activeDelta.trust > 0 ? 'text-[#1D4ED8]' : 'text-[#4E5869]'
                     }`}
                   >
                     {formatDeltaTick(activeDelta.trust, 'Trust')}
                   </span>
                 )}
-                <span className="text-sm font-bold text-[#141413]">{displayedHud.trust}%</span>
+                <span className="text-sm font-bold text-[#0F141E]">{displayedHud.trust}%</span>
               </div>
             </div>
-            <div className="h-2 w-full bg-[#F3F1EA] border border-[#E2E0D8] rounded-sm overflow-hidden">
+            <div className="h-2 w-full bg-[#ECEEF2] border border-[#DDE2EA] rounded-sm overflow-hidden">
               <div
-                className="h-full bg-[#141413] transition-all duration-300"
+                className="h-full bg-[#0F141E] transition-all duration-300"
                 style={{ width: `${displayedHud.trust}%` }}
               />
             </div>
@@ -486,24 +486,24 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
           {/* Time Remaining */}
           <div>
             <div className="flex items-baseline justify-between gap-2 mb-1.5">
-              <span className="text-xs font-medium text-[#57554F] inline-flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-[#D94E1F]" />
+              <span className="text-xs font-medium text-[#4E5869] inline-flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-[#1D4ED8]" />
                 <span>Time to Deadline</span>
               </span>
               <div className="flex items-baseline gap-2 font-mono tabular-nums">
                 {activeDelta && activeDelta.mins !== 0 && (
-                  <span className="text-[11px] font-semibold text-[#57554F]">
+                  <span className="text-[11px] font-semibold text-[#4E5869]">
                     {formatDeltaTick(activeDelta.mins, 'mins')}
                   </span>
                 )}
-                <span className="text-sm font-bold text-[#141413]">
+                <span className="text-sm font-bold text-[#0F141E]">
                   {String(displayedHud.minsLeft).padStart(2, '0')}:00 mins
                 </span>
               </div>
             </div>
-            <div className="h-2 w-full bg-[#F3F1EA] border border-[#E2E0D8] rounded-sm overflow-hidden">
+            <div className="h-2 w-full bg-[#ECEEF2] border border-[#DDE2EA] rounded-sm overflow-hidden">
               <div
-                className="h-full bg-[#D94E1F] transition-all duration-300"
+                className="h-full bg-[#1D4ED8] transition-all duration-300"
                 style={{ width: `${Math.min(100, Math.round((displayedHud.minsLeft / 22) * 100))}%` }}
               />
             </div>
@@ -512,22 +512,22 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
           {/* AI Leverage Score */}
           <div>
             <div className="flex items-baseline justify-between gap-2 mb-1.5">
-              <span className="text-xs font-medium text-[#57554F] inline-flex items-center gap-1.5">
-                <TrendingUp className="w-3.5 h-3.5 text-[#D94E1F]" />
+              <span className="text-xs font-medium text-[#4E5869] inline-flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5 text-[#1D4ED8]" />
                 <span>AI Leverage Score</span>
               </span>
               <div className="flex items-baseline gap-2 font-mono tabular-nums">
                 {activeDelta && activeDelta.leverage !== 0 && (
-                  <span className="text-[11px] font-semibold text-[#D94E1F]">
+                  <span className="text-[11px] font-semibold text-[#1D4ED8]">
                     {formatDeltaTick(activeDelta.leverage, 'Lev')}
                   </span>
                 )}
-                <span className="text-sm font-bold text-[#141413]">{displayedHud.leverage}/100</span>
+                <span className="text-sm font-bold text-[#0F141E]">{displayedHud.leverage}/100</span>
               </div>
             </div>
-            <div className="h-2 w-full bg-[#F3F1EA] border border-[#E2E0D8] rounded-sm overflow-hidden">
+            <div className="h-2 w-full bg-[#ECEEF2] border border-[#DDE2EA] rounded-sm overflow-hidden">
               <div
-                className="h-full bg-[#D94E1F] transition-all duration-300"
+                className="h-full bg-[#1D4ED8] transition-all duration-300"
                 style={{ width: `${displayedHud.leverage}%` }}
               />
             </div>
@@ -536,14 +536,14 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
 
         {/* Scene progress strip */}
         <div
-          className="mt-4 h-1 w-full bg-[#F3F1EA] rounded-sm overflow-hidden"
+          className="mt-4 h-1 w-full bg-[#ECEEF2] rounded-sm overflow-hidden"
           role="progressbar"
           aria-valuenow={progressPct}
           aria-valuemin={0}
           aria-valuemax={100}
         >
           <div
-            className="h-full bg-[#141413] transition-all duration-200"
+            className="h-full bg-[#0F141E] transition-all duration-200"
             style={{ width: `${progressPct}%` }}
           />
         </div>
@@ -552,37 +552,37 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
       {/* Main 2-Column Editorial Simulation Stage */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-8">
-          <article className="border border-[#E2E0D8] bg-white rounded-lg p-6 sm:p-8">
-            <div className="text-xs font-mono text-[#57554F] mb-2">{activeNode.stepLabel}</div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#141413] leading-snug mb-5">
+          <article className="border border-[#DDE2EA] bg-white rounded-lg p-6 sm:p-8">
+            <div className="text-xs font-mono text-[#4E5869] mb-2">{activeNode.stepLabel}</div>
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#0F141E] leading-snug mb-5">
               {activeNode.title}
             </h2>
 
-            <div className="space-y-4 max-w-[65ch] text-[17px] leading-[1.65] text-[#141413]">
+            <div className="space-y-4 max-w-[65ch] text-[17px] leading-[1.65] text-[#0F141E]">
               {activeNode.narrative.map((para, idx) => (
                 <p key={idx}>{para}</p>
               ))}
             </div>
 
             {activeNode.callout && (
-              <aside className="mt-6 p-4 sm:p-5 bg-[#FAF9F6] border border-[#E2E0D8] rounded-md max-w-[65ch]">
-                <p className="text-xs font-mono uppercase tracking-wider text-[#D94E1F] mb-1.5">
+              <aside className="mt-6 p-4 sm:p-5 bg-[#F6F7F9] border border-[#DDE2EA] rounded-md max-w-[65ch]">
+                <p className="text-xs font-mono uppercase tracking-wider text-[#1D4ED8] mb-1.5">
                   {activeNode.callout.label}
                 </p>
-                <p className="text-sm text-[#141413] leading-relaxed">{activeNode.callout.body}</p>
+                <p className="text-sm text-[#0F141E] leading-relaxed">{activeNode.callout.body}</p>
               </aside>
             )}
 
             {/* 2. TACTILE PROMPT CARD DECK + SIMULATED AI TERMINAL PREVIEW */}
             {activeNode.kind === 'choice' && activeNode.choices && (
-              <div id="scenario-choices" className="mt-8 pt-6 border-t border-[#E2E0D8]">
+              <div id="scenario-choices" className="mt-8 pt-6 border-t border-[#DDE2EA]">
                 {!activePendingChoice ? (
                   <>
                     <div className="flex items-center justify-between gap-2 mb-4">
-                      <p className="text-xs font-mono uppercase tracking-wider text-[#57554F]">
+                      <p className="text-xs font-mono uppercase tracking-wider text-[#4E5869]">
                         Prompt Card Deck · Select a Tactical Move
                       </p>
-                      <span className="text-xs text-[#57554F] font-mono">0ms Local Simulation</span>
+                      <span className="text-xs text-[#4E5869] font-mono">0ms Local Simulation</span>
                     </div>
 
                     <div
@@ -601,28 +601,28 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                             key={choice.id}
                             type="button"
                             onClick={() => handleCardSelect(choice)}
-                            className={`text-left p-5 rounded-md border bg-[#FAF9F6] flex flex-col justify-between gap-4 transition-all active:scale-[0.99] cursor-pointer group ${
+                            className={`text-left p-5 rounded-md border bg-[#F6F7F9] flex flex-col justify-between gap-4 transition-all active:scale-[0.99] cursor-pointer group ${
                               isHighlighted
-                                ? 'border-[#D94E1F] bg-white ring-2 ring-[#D94E1F]/25'
-                                : 'border-[#E2E0D8] hover:border-[#141413] hover:bg-white'
+                                ? 'border-[#1D4ED8] bg-white ring-2 ring-[#1D4ED8]/25'
+                                : 'border-[#DDE2EA] hover:border-[#0F141E] hover:bg-white'
                             }`}
                           >
                             <div>
                               {/* Unboxed Risk / Reward telemetry line */}
-                              <div className="text-[11px] font-mono tracking-wide text-[#D94E1F] mb-2">
+                              <div className="text-[11px] font-mono tracking-wide text-[#1D4ED8] mb-2">
                                 {choice.riskRewardTag ?? choice.tacticTag}
                               </div>
-                              <h3 className="font-serif text-lg font-semibold text-[#141413] leading-snug mb-2">
+                              <h3 className="font-serif text-lg font-semibold text-[#0F141E] leading-snug mb-2">
                                 {choice.moveTitle ?? choice.label}
                               </h3>
-                              <p className="text-sm text-[#57554F] leading-relaxed">
+                              <p className="text-sm text-[#4E5869] leading-relaxed">
                                 {choice.label}
                               </p>
                             </div>
 
-                            <div className="pt-3 border-t border-[#E2E0D8] flex items-center justify-between text-xs font-medium text-[#141413]">
-                              <span className="font-mono text-[#57554F]">Card 0{idx + 1}</span>
-                              <span className="inline-flex items-center gap-1 group-hover:text-[#D94E1F] transition-colors">
+                            <div className="pt-3 border-t border-[#DDE2EA] flex items-center justify-between text-xs font-medium text-[#0F141E]">
+                              <span className="font-mono text-[#4E5869]">Card 0{idx + 1}</span>
+                              <span className="inline-flex items-center gap-1 group-hover:text-[#1D4ED8] transition-colors">
                                 <span>Execute Move</span>
                                 <ArrowRight className="w-3.5 h-3.5" />
                               </span>
@@ -637,10 +637,10 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                   <div className="space-y-4">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <span className="text-xs font-mono uppercase tracking-wider text-[#D94E1F]">
+                        <span className="text-xs font-mono uppercase tracking-wider text-[#1D4ED8]">
                           Simulated Execution · {activePendingChoice.moveTitle ?? activePendingChoice.label}
                         </span>
-                        <p className="text-xs font-mono text-[#57554F] mt-0.5">
+                        <p className="text-xs font-mono text-[#4E5869] mt-0.5">
                           {activePendingChoice.riskRewardTag ?? activePendingChoice.tacticTag}
                         </p>
                       </div>
@@ -654,21 +654,21 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                             );
                             setTerminalDone(true);
                           }}
-                          className="text-xs font-mono text-[#57554F] hover:text-[#141413] underline cursor-pointer"
+                          className="text-xs font-mono text-[#4E5869] hover:text-[#0F141E] underline cursor-pointer"
                         >
                           Skip Typing
                         </button>
                       )}
                     </div>
 
-                    <div className="bg-[#141413] text-[#FAF9F6] rounded-md border border-[#141413] p-4 sm:p-5 font-mono text-xs leading-relaxed space-y-4">
+                    <div className="bg-[#0F141E] text-[#F6F7F9] rounded-md border border-[#0F141E] p-4 sm:p-5 font-mono text-xs leading-relaxed space-y-4">
                       {/* Dispatched prompt */}
-                      <div className="pb-3 border-b border-[#FAF9F6]/15">
-                        <div className="text-[#FAF9F6]/60 mb-1 flex items-center gap-1.5">
-                          <Terminal className="w-3.5 h-3.5 text-[#D94E1F]" />
+                      <div className="pb-3 border-b border-[#F6F7F9]/15">
+                        <div className="text-[#F6F7F9]/60 mb-1 flex items-center gap-1.5">
+                          <Terminal className="w-3.5 h-3.5 text-[#1D4ED8]" />
                           <span>PROMPT DISPATCHED</span>
                         </div>
-                        <div className="text-[#FAF9F6]">
+                        <div className="text-[#F6F7F9]">
                           &gt; {activePendingChoice.terminalPreview?.promptSent ?? activePendingChoice.label}
                         </div>
                       </div>
@@ -676,14 +676,14 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                       {/* Token Efficiency Bar */}
                       <div>
                         <div className="flex items-center justify-between text-[11px] mb-1.5">
-                          <span className="text-[#FAF9F6]/70">TOKEN EFFICIENCY / SIGNAL RATIO</span>
-                          <span className="text-[#D94E1F] font-semibold tabular-nums">
+                          <span className="text-[#F6F7F9]/70">TOKEN EFFICIENCY / SIGNAL RATIO</span>
+                          <span className="text-[#1D4ED8] font-semibold tabular-nums">
                             {activePendingChoice.terminalPreview?.tokenEfficiency ?? 82}%
                           </span>
                         </div>
-                        <div className="h-1.5 w-full bg-[#FAF9F6]/15 rounded-sm overflow-hidden">
+                        <div className="h-1.5 w-full bg-[#F6F7F9]/15 rounded-sm overflow-hidden">
                           <div
-                            className="h-full bg-[#D94E1F] transition-all duration-300"
+                            className="h-full bg-[#1D4ED8] transition-all duration-300"
                             style={{
                               width: `${activePendingChoice.terminalPreview?.tokenEfficiency ?? 82}%`,
                             }}
@@ -693,29 +693,29 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
 
                       {/* Streaming Simulated AI Output */}
                       <div>
-                        <div className="text-[#FAF9F6]/60 mb-1">MODEL OUTPUT</div>
-                        <pre className="whitespace-pre-wrap text-[#FAF9F6] min-h-[48px]">
+                        <div className="text-[#F6F7F9]/60 mb-1">MODEL OUTPUT</div>
+                        <pre className="whitespace-pre-wrap text-[#F6F7F9] min-h-[48px]">
                           {typedTerminal}
-                          {!terminalDone && <span className="text-[#D94E1F]">_</span>}
+                          {!terminalDone && <span className="text-[#1D4ED8]">_</span>}
                         </pre>
                       </div>
 
                       {/* Boss / Client Reaction */}
-                      <div className="pt-3 border-t border-[#FAF9F6]/15 text-[#FAF9F6]/90">
-                        <span className="text-[#D94E1F] font-semibold">STAKEHOLDER REACTION: </span>
+                      <div className="pt-3 border-t border-[#F6F7F9]/15 text-[#F6F7F9]/90">
+                        <span className="text-[#1D4ED8] font-semibold">STAKEHOLDER REACTION: </span>
                         {activePendingChoice.terminalPreview?.bossReaction ?? activePendingChoice.consequence}
                       </div>
                     </div>
 
-                    <div className="p-4 bg-[#FAF9F6] border border-[#E2E0D8] rounded-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                      <p className="text-sm text-[#141413]">
+                    <div className="p-4 bg-[#F6F7F9] border border-[#DDE2EA] rounded-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <p className="text-sm text-[#0F141E]">
                         {activePendingChoice.consequence}
                       </p>
                       {!demoMode && (
                         <button
                           type="button"
                           onClick={handleAdvanceFromTerminal}
-                          className="min-h-[44px] px-5 py-2.5 bg-[#D94E1F] text-[#FAF9F6] text-sm font-semibold rounded-md hover:bg-[#B83E16] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 whitespace-nowrap shrink-0 cursor-pointer"
+                          className="min-h-[44px] px-5 py-2.5 bg-[#1D4ED8] text-[#F6F7F9] text-sm font-semibold rounded-md hover:bg-[#1E40AF] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 whitespace-nowrap shrink-0 cursor-pointer"
                         >
                           <span>Advance to Next Scene</span>
                           <ArrowRight className="w-4 h-4" />
@@ -729,27 +729,27 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
 
             {/* 3. BOSS ENCOUNTER — LIVE PROMPT DUEL MINI-GAME */}
             {activeNode.kind === 'prompt_boss' && activeNode.promptChallenge && (
-              <div id="scenario-choices" className="mt-8 pt-6 border-t border-[#E2E0D8]">
+              <div id="scenario-choices" className="mt-8 pt-6 border-t border-[#DDE2EA]">
                 <div className="mb-5">
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                    <h3 className="font-serif text-xl font-semibold text-[#141413]">
+                    <h3 className="font-serif text-xl font-semibold text-[#0F141E]">
                       {activeNode.promptChallenge.title}
                     </h3>
-                    <span className="text-xs font-mono text-[#D94E1F] whitespace-nowrap tabular-nums">
+                    <span className="text-xs font-mono text-[#1D4ED8] whitespace-nowrap tabular-nums">
                       Pass: {activeNode.promptChallenge.passingScore}/100 · +{activeNode.promptChallenge.xpReward} XP
                     </span>
                   </div>
-                  <p className="text-sm text-[#57554F] mb-4">
+                  <p className="text-sm text-[#4E5869] mb-4">
                     {activeNode.promptChallenge.roleBrief}
                   </p>
 
                   {/* Real-Time 3-Constraint Live Checklist (0ms per keystroke) */}
-                  <div className="p-4 bg-[#FAF9F6] border border-[#141413] rounded-md mb-4">
+                  <div className="p-4 bg-[#F6F7F9] border border-[#0F141E] rounded-md mb-4">
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="text-xs font-mono uppercase tracking-wider text-[#141413] font-semibold">
+                      <span className="text-xs font-mono uppercase tracking-wider text-[#0F141E] font-semibold">
                         Live Duel Guardrails (0ms Keystroke Check)
                       </span>
-                      <span className="text-xs font-mono tabular-nums text-[#D94E1F] font-semibold">
+                      <span className="text-xs font-mono tabular-nums text-[#1D4ED8] font-semibold">
                         {passedLiveCount} / {liveChecklistStatus.length} Locked
                       </span>
                     </div>
@@ -759,13 +759,13 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                           key={item.id}
                           className={`p-2.5 rounded border text-xs transition-colors flex items-start gap-2 ${
                             item.matched
-                              ? 'border-[#D94E1F] bg-white text-[#141413]'
-                              : 'border-[#E2E0D8] bg-[#F3F1EA] text-[#57554F]'
+                              ? 'border-[#1D4ED8] bg-white text-[#0F141E]'
+                              : 'border-[#DDE2EA] bg-[#ECEEF2] text-[#4E5869]'
                           }`}
                         >
                           <span
                             className={`font-mono font-bold shrink-0 ${
-                              item.matched ? 'text-[#D94E1F]' : 'text-[#57554F]'
+                              item.matched ? 'text-[#1D4ED8]' : 'text-[#4E5869]'
                             }`}
                           >
                             {item.matched ? '[✓]' : '[ ]'}
@@ -776,7 +776,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#F3F1EA] border border-[#E2E0D8] rounded font-mono text-xs text-[#57554F]">
+                  <div className="p-3 bg-[#ECEEF2] border border-[#DDE2EA] rounded font-mono text-xs text-[#4E5869]">
                     Input Context: {activeNode.promptChallenge.inputContext}
                   </div>
                 </div>
@@ -786,7 +786,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <label
                         htmlFor="boss-prompt-textarea"
-                        className="text-sm font-medium text-[#141413]"
+                        className="text-sm font-medium text-[#0F141E]"
                       >
                         Your Prompt Draft
                       </label>
@@ -796,7 +796,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                           onClick={() =>
                             setPromptInput(activeNode.promptChallenge?.starterPrompt ?? '')
                           }
-                          className="text-xs font-medium text-[#D94E1F] hover:underline cursor-pointer"
+                          className="text-xs font-medium text-[#1D4ED8] hover:underline cursor-pointer"
                         >
                           Insert Reference Template
                         </button>
@@ -809,14 +809,14 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                       onChange={(e) => !demoMode && setPromptInput(e.target.value)}
                       readOnly={demoMode}
                       placeholder="Write your role, locked output format, and anti-hallucination guardrail..."
-                      className="w-full p-4 font-mono text-sm leading-relaxed bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-[#141413] focus:border-[#D94E1F] focus:outline-none"
+                      className="w-full p-4 font-mono text-sm leading-relaxed bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-[#0F141E] focus:border-[#1D4ED8] focus:outline-none"
                     />
                   </div>
 
                   {evalError && (
                     <div
                       role="alert"
-                      className="p-3 border border-[#D94E1F] bg-[#FAF9F6] rounded text-sm text-[#141413]"
+                      className="p-3 border border-[#1D4ED8] bg-[#F6F7F9] rounded text-sm text-[#0F141E]"
                     >
                       {evalError}
                     </div>
@@ -827,7 +827,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                       <button
                         type="submit"
                         disabled={evalLoading || effectivePromptText.trim().length < 15}
-                        className="min-h-[46px] px-5 py-2.5 bg-[#141413] text-[#FAF9F6] text-sm font-semibold rounded-md hover:bg-[#D94E1F] active:scale-[0.99] transition-all inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+                        className="min-h-[46px] px-5 py-2.5 bg-[#0F141E] text-[#F6F7F9] text-sm font-semibold rounded-md hover:bg-[#1D4ED8] active:scale-[0.99] transition-all inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer"
                       >
                         <Terminal className="w-4 h-4" />
                         <span>{evalLoading ? 'Evaluating Prompt...' : 'Execute Prompt'}</span>
@@ -838,17 +838,17 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
 
                 {/* Evaluation Result + Tactile Ink Press Outcome Stamp */}
                 {effectiveEvalResult && (
-                  <div className="mt-6 p-5 sm:p-6 border border-[#141413] bg-[#FAF9F6] rounded-md">
-                    <div className="flex flex-wrap items-center justify-between gap-4 pb-4 mb-4 border-b border-[#E2E0D8]">
+                  <div className="mt-6 p-5 sm:p-6 border border-[#0F141E] bg-[#F6F7F9] rounded-md">
+                    <div className="flex flex-wrap items-center justify-between gap-4 pb-4 mb-4 border-b border-[#DDE2EA]">
                       <div>
-                        <span className="text-xs font-mono text-[#57554F] block mb-1">
+                        <span className="text-xs font-mono text-[#4E5869] block mb-1">
                           {effectiveEvalResult.source === 'gemini'
                             ? `Evaluated via ${effectiveEvalResult.model}`
                             : 'Simulation Rubric Evaluator'}
                         </span>
-                        <h4 className="font-serif text-xl font-semibold text-[#141413]">
+                        <h4 className="font-serif text-xl font-semibold text-[#0F141E]">
                           {effectiveEvalResult.verdict} ·{' '}
-                          <span className="font-mono text-[#D94E1F] tabular-nums">
+                          <span className="font-mono text-[#1D4ED8] tabular-nums">
                             {effectiveEvalResult.score}/100
                           </span>
                         </h4>
@@ -858,8 +858,8 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                       <div
                         className={`px-3.5 py-1.5 border-2 border-double font-mono text-xs font-bold tracking-widest uppercase -rotate-2 select-none ${
                           effectiveEvalResult.passed
-                            ? 'border-[#D94E1F] text-[#D94E1F] bg-white'
-                            : 'border-[#141413] text-[#141413] bg-[#F3F1EA]'
+                            ? 'border-[#1D4ED8] text-[#1D4ED8] bg-white'
+                            : 'border-[#0F141E] text-[#0F141E] bg-[#ECEEF2]'
                         }`}
                       >
                         {effectiveEvalResult.stampLabel ??
@@ -867,26 +867,26 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                       </div>
                     </div>
 
-                    <p className="text-sm text-[#141413] mb-4 leading-relaxed">
+                    <p className="text-sm text-[#0F141E] mb-4 leading-relaxed">
                       <strong className="font-semibold">What worked:</strong>{' '}
                       {effectiveEvalResult.strengths}
                     </p>
 
                     <div className="mb-4">
-                      <p className="text-xs font-mono uppercase tracking-wider text-[#57554F] mb-2">
+                      <p className="text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-2">
                         Two Concise Improvements
                       </p>
-                      <ul className="space-y-1.5 text-sm text-[#141413]">
+                      <ul className="space-y-1.5 text-sm text-[#0F141E]">
                         {effectiveEvalResult.improvements.map((imp, idx) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <span className="font-mono text-[#D94E1F] text-xs mt-0.5">•</span>
+                            <span className="font-mono text-[#1D4ED8] text-xs mt-0.5">•</span>
                             <span>{imp}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <p className="text-sm text-[#57554F] italic mb-5">
+                    <p className="text-sm text-[#4E5869] italic mb-5">
                       {effectiveEvalResult.mentorNote}
                     </p>
 
@@ -894,7 +894,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                       <button
                         type="button"
                         onClick={handleAdvanceAfterPass}
-                        className="w-full sm:w-auto min-h-[46px] px-5 py-2.5 bg-[#D94E1F] text-[#FAF9F6] text-sm font-semibold rounded-md hover:bg-[#B83E16] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
+                        className="w-full sm:w-auto min-h-[46px] px-5 py-2.5 bg-[#1D4ED8] text-[#F6F7F9] text-sm font-semibold rounded-md hover:bg-[#1E40AF] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
                       >
                         <span>
                           Claim +{effectiveEvalResult.xpEarned} XP & Complete Chapter
@@ -903,7 +903,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                       </button>
                     ) : (
                       !effectiveEvalResult.passed && (
-                        <p className="text-xs font-medium text-[#D94E1F]">
+                        <p className="text-xs font-medium text-[#1D4ED8]">
                           {activeNode.promptChallenge.retryHint}
                         </p>
                       )
@@ -915,29 +915,29 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
 
             {/* ENDING RANK NODE WITH INK PRESS STAMP */}
             {activeNode.kind === 'ending' && activeNode.endingRank && (
-              <div className="mt-8 pt-6 border-t border-[#E2E0D8]">
-                <div className="p-6 bg-[#FAF9F6] border border-[#141413] rounded-md mb-6">
+              <div className="mt-8 pt-6 border-t border-[#DDE2EA]">
+                <div className="p-6 bg-[#F6F7F9] border border-[#0F141E] rounded-md mb-6">
                   <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                     <div>
-                      <p className="text-xs font-mono uppercase tracking-wider text-[#D94E1F] mb-1">
+                      <p className="text-xs font-mono uppercase tracking-wider text-[#1D4ED8] mb-1">
                         Rank Badge Earned · {activeNode.endingRank.badgeCode}
                       </p>
-                      <h3 className="font-serif text-2xl font-semibold text-[#141413]">
+                      <h3 className="font-serif text-2xl font-semibold text-[#0F141E]">
                         {activeNode.endingRank.title}
                       </h3>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="px-3.5 py-1.5 border-2 border-double border-[#D94E1F] text-[#D94E1F] bg-white font-mono text-xs font-bold tracking-widest uppercase -rotate-2">
+                      <span className="px-3.5 py-1.5 border-2 border-double border-[#1D4ED8] text-[#1D4ED8] bg-white font-mono text-xs font-bold tracking-widest uppercase -rotate-2">
                         {activeNode.endingRank.stampText}
                       </span>
-                      <Award className="w-7 h-7 text-[#D94E1F] shrink-0" strokeWidth={1.5} />
+                      <Award className="w-7 h-7 text-[#1D4ED8] shrink-0" strokeWidth={1.5} />
                     </div>
                   </div>
-                  <p className="text-sm text-[#141413] leading-relaxed mb-4">
+                  <p className="text-sm text-[#0F141E] leading-relaxed mb-4">
                     {activeNode.endingRank.summary}
                   </p>
-                  <p className="text-xs text-[#57554F]">
+                  <p className="text-xs text-[#4E5869]">
                     {activeNode.endingRank.nextChapterHint}
                   </p>
                 </div>
@@ -946,7 +946,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                   <button
                     type="button"
                     onClick={handleCopyRank}
-                    className="min-h-[44px] px-4 py-2.5 bg-[#141413] text-[#FAF9F6] text-sm font-medium rounded-md hover:bg-[#D94E1F] active:scale-[0.99] transition-all inline-flex items-center gap-2 cursor-pointer"
+                    className="min-h-[44px] px-4 py-2.5 bg-[#0F141E] text-[#F6F7F9] text-sm font-medium rounded-md hover:bg-[#1D4ED8] active:scale-[0.99] transition-all inline-flex items-center gap-2 cursor-pointer"
                   >
                     {copiedRank ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                     <span>{copiedRank ? 'Rank Copied' : 'Share Rank Badge'}</span>
@@ -967,9 +967,9 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                               ? onSwitchChapter(chapter.book_slug, nextToc.chapter_num)
                               : onOpenVault()
                           }
-                          className="min-h-[44px] px-4 py-2.5 border border-[#141413] bg-white text-[#141413] text-sm font-medium rounded-md hover:bg-[#F3F1EA] transition-colors inline-flex items-center gap-2 cursor-pointer"
+                          className="min-h-[44px] px-4 py-2.5 border border-[#0F141E] bg-white text-[#0F141E] text-sm font-medium rounded-md hover:bg-[#ECEEF2] transition-colors inline-flex items-center gap-2 cursor-pointer"
                         >
-                          <Sparkles className="w-4 h-4 text-[#D94E1F]" />
+                          <Sparkles className="w-4 h-4 text-[#1D4ED8]" />
                           <span>
                             {canOpenNext
                               ? `Play Chapter ${nextToc.chapter_num}`
@@ -983,7 +983,7 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                     href={chapter.gumroad_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="min-h-[44px] px-4 py-2.5 border border-[#E2E0D8] bg-white text-[#141413] text-sm font-medium rounded-md hover:border-[#141413] transition-colors inline-flex items-center gap-1.5"
+                    className="min-h-[44px] px-4 py-2.5 border border-[#DDE2EA] bg-white text-[#0F141E] text-sm font-medium rounded-md hover:border-[#0F141E] transition-colors inline-flex items-center gap-1.5"
                   >
                     <span>Get Full Book on Gumroad</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -996,8 +996,8 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
 
         {/* Right Margin Rail: Skill Stats & Decision Ledger */}
         <aside className="lg:col-span-4 space-y-6">
-          <div className="border border-[#E2E0D8] bg-white rounded-lg p-5">
-            <h3 className="font-serif text-lg font-semibold text-[#141413] mb-4">
+          <div className="border border-[#DDE2EA] bg-white rounded-lg p-5">
+            <h3 className="font-serif text-lg font-semibold text-[#0F141E] mb-4">
               Skill Profile
             </h3>
             <div className="space-y-3">
@@ -1006,12 +1006,12 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                 return (
                   <div key={key}>
                     <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="text-[#57554F] font-medium">{label}</span>
-                      <span className="font-mono text-[#141413] tabular-nums">{val}</span>
+                      <span className="text-[#4E5869] font-medium">{label}</span>
+                      <span className="font-mono text-[#0F141E] tabular-nums">{val}</span>
                     </div>
-                    <div className="h-1.5 w-full bg-[#F3F1EA] rounded-sm overflow-hidden">
+                    <div className="h-1.5 w-full bg-[#ECEEF2] rounded-sm overflow-hidden">
                       <div
-                        className="h-full bg-[#141413] transition-all duration-200"
+                        className="h-full bg-[#0F141E] transition-all duration-200"
                         style={{ width: `${val}%` }}
                       />
                     </div>
@@ -1021,12 +1021,12 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
             </div>
           </div>
 
-          <div className="border border-[#E2E0D8] bg-white rounded-lg p-5">
-            <h3 className="font-serif text-lg font-semibold text-[#141413] mb-3">
+          <div className="border border-[#DDE2EA] bg-white rounded-lg p-5">
+            <h3 className="font-serif text-lg font-semibold text-[#0F141E] mb-3">
               Decision Trail
             </h3>
             {history.length === 0 ? (
-              <p className="text-sm text-[#57554F]">
+              <p className="text-sm text-[#4E5869]">
                 Your tactical moves and HUD shifts will appear here as you progress.
               </p>
             ) : (
@@ -1034,12 +1034,12 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
                 {history.map((item, idx) => (
                   <li
                     key={idx}
-                    className="pb-3 border-b border-[#E2E0D8] last:border-b-0 last:pb-0"
+                    className="pb-3 border-b border-[#DDE2EA] last:border-b-0 last:pb-0"
                   >
-                    <div className="text-xs font-mono text-[#D94E1F] mb-0.5">
+                    <div className="text-xs font-mono text-[#1D4ED8] mb-0.5">
                       Step 0{idx + 1} · +{item.xpDelta} XP
                     </div>
-                    <div className="font-medium text-[#141413] leading-snug">
+                    <div className="font-medium text-[#0F141E] leading-snug">
                       {item.choiceLabel}
                     </div>
                   </li>
@@ -1051,13 +1051,13 @@ export const ChapterPlayer: React.FC<ChapterPlayerProps> = ({
       </div>
 
       {/* Compact Mobile Thumb Action Bar (<= 56px, well under 15% mobile viewport cap) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-[#FAF9F6]/95 backdrop-blur-sm border-t border-[#E2E0D8] h-14 px-4 flex items-center justify-between gap-3">
-        <span className="text-xs font-mono text-[#57554F] tabular-nums truncate">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-[#F6F7F9]/95 backdrop-blur-sm border-t border-[#DDE2EA] h-14 px-4 flex items-center justify-between gap-3">
+        <span className="text-xs font-mono text-[#4E5869] tabular-nums truncate">
           Trust {displayedHud.trust}% · {displayedHud.minsLeft}m left
         </span>
         <a
           href="#scenario-choices"
-          className="px-4 py-2 bg-[#D94E1F] text-[#FAF9F6] text-xs font-semibold rounded-md whitespace-nowrap shrink-0"
+          className="px-4 py-2 bg-[#1D4ED8] text-[#F6F7F9] text-xs font-semibold rounded-md whitespace-nowrap shrink-0"
         >
           {activeNode.kind === 'ending' ? 'View Rank' : 'Jump to Action'}
         </a>

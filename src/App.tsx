@@ -84,7 +84,7 @@ function applyHudDelta(base: HudState, delta?: Partial<HudDelta> | null): HudSta
 }
 
 export default function App() {
-  const [route, setRoute] = useState<ActiveRoute>('shelf');
+  const [route, setRoute] = useState<ActiveRoute>('studio3d');
   const [books, setBooks] = useState<BookSummary[]>(() => getCachedBooksSummary() ?? []);
   const [booksLoading, setBooksLoading] = useState<boolean>(() => !getCachedBooksSummary());
   const [booksError, setBooksError] = useState<string | null>(null);
@@ -548,7 +548,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#141413]">
+    <div className="min-h-screen flex flex-col bg-[#F6F7F9] text-[#0F141E]">
       <Header
         activeRoute={route}
         onNavigate={handleNavigate}
@@ -557,21 +557,21 @@ export default function App() {
 
       {/* Quiet Demo Preview Status Strip when ?demo=1 or Auto-Play is running */}
       {demoMode && (
-        <div className="bg-[#141413] text-[#FAF9F6] border-b border-[#141413] px-4 py-1.5">
+        <div className="bg-[#0F141E] text-[#F6F7F9] border-b border-[#0F141E] px-4 py-1.5">
           <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 text-xs font-mono">
             <span>{demoBannerLabel}</span>
             <div className="flex items-center gap-4">
               <button
                 type="button"
                 onClick={() => void startDemo()}
-                className="text-[#FAF9F6]/80 hover:text-white underline cursor-pointer"
+                className="text-[#F6F7F9]/80 hover:text-white underline cursor-pointer"
               >
                 Replay 12s
               </button>
               <button
                 type="button"
                 onClick={stopDemo}
-                className="text-[#D94E1F] font-semibold hover:underline cursor-pointer"
+                className="text-[#1D4ED8] font-semibold hover:underline cursor-pointer"
               >
                 Exit Preview
               </button>
@@ -660,14 +660,17 @@ export default function App() {
         {route === 'studio3d' && (
           <Suspense
             fallback={
-              <div className="w-full h-[calc(100vh-56px)] flex items-center justify-center bg-[#FAF9F6] font-mono text-xs text-[#57554F]">
+              <div className="w-full h-[calc(100vh-56px)] flex items-center justify-center bg-[#F6F7F9] font-mono text-xs text-[#4E5869]">
                 Initializing 3D Press Vault...
               </div>
             }
           >
             <Studio3D
               books={books}
-              onLaunchBook={(slug) => void openChapter(slug, 1)}
+              unlockedBooks={progress.unlockedBooks}
+              onLaunchBook={(slug, ch = 1) => void openChapter(slug, ch)}
+              onOpenVoiceMentor={() => setRoute('voice')}
+              onOpenVault={() => setVaultOpen(true)}
             />
           </Suspense>
         )}
@@ -680,22 +683,22 @@ export default function App() {
       </div>
 
       {route !== 'studio3d' && (
-        <footer className="border-t border-[#E2E0D8] py-6 mt-12">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#57554F]">
+        <footer className="border-t border-[#DDE2EA] py-6 mt-12">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#4E5869]">
             <span>James Walker AI · Interactive Game-Book Editions</span>
             <div className="flex items-center gap-4">
               <a
                 href="https://jameswalkerai.gumroad.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#141413] underline underline-offset-4"
+                className="hover:text-[#0F141E] underline underline-offset-4"
               >
                 jameswalkerai.gumroad.com
               </a>
               <button
                 type="button"
                 onClick={() => setVaultOpen(true)}
-                className="hover:text-[#141413] underline underline-offset-4 cursor-pointer"
+                className="hover:text-[#0F141E] underline underline-offset-4 cursor-pointer"
               >
                 Redeem License Key
               </button>

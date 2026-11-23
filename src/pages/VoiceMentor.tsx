@@ -222,7 +222,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
 
       const w = canvas.width;
       const h = canvas.height;
-      ctx.fillStyle = '#FAF9F6';
+      ctx.fillStyle = '#F6F7F9';
       ctx.fillRect(0, 0, w, h);
 
       const barCount = 32;
@@ -232,7 +232,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
       for (let i = 0; i < barCount; i++) {
         const val = mutedRef.current ? 4 : data[Math.min(data.length - 1, i * 2)];
         const barH = Math.max(4, (val / 255) * (h - 12));
-        ctx.fillStyle = val > 95 ? '#D94E1F' : '#141413';
+        ctx.fillStyle = val > 95 ? '#1D4ED8' : '#0F141E';
         ctx.fillRect(i * (barW + gap), (h - barH) / 2, barW, barH);
       }
     };
@@ -357,14 +357,14 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-      <div className="border-b border-[#E2E0D8] pb-6 mb-8">
-        <p className="text-xs font-mono uppercase tracking-wider text-[#57554F] mb-2">
+      <div className="border-b border-[#DDE2EA] pb-6 mb-8">
+        <p className="text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-2">
           Real-Time Voice Coach · Gemini 3.8 Live API (16kHz / 24kHz PCM)
         </p>
-        <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-[#141413] mb-2">
+        <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-[#0F141E] mb-2">
           Live Voice Mentor
         </h1>
-        <p className="text-[16px] text-[#57554F] max-w-[65ch]">
+        <p className="text-[16px] text-[#4E5869] max-w-[65ch]">
           Rehearse high-stakes workplace scenarios out loud or read your prompt drafts for instant
           spoken critique from James Walker AI.
         </p>
@@ -373,11 +373,11 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Control Deck: Voice, Scenario Focus & Live Connection */}
         <section className="lg:col-span-5 space-y-5">
-          <div className="border border-[#E2E0D8] bg-white rounded-lg p-5 sm:p-6 space-y-5">
+          <div className="border border-[#DDE2EA] bg-white rounded-lg p-5 sm:p-6 space-y-5">
             <div>
               <label
                 htmlFor="voice-book-select"
-                className="block text-xs font-mono uppercase tracking-wider text-[#57554F] mb-2"
+                className="block text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-2"
               >
                 Coaching Playbook Context
               </label>
@@ -386,7 +386,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                 value={selectedBook}
                 disabled={status === 'live' || status === 'connecting'}
                 onChange={(e) => setSelectedBook(e.target.value)}
-                className="w-full min-h-[44px] px-3 py-2 text-sm bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-[#141413] focus:border-[#D94E1F] focus:outline-none disabled:opacity-60"
+                className="w-full min-h-[44px] px-3 py-2 text-sm bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-[#0F141E] focus:border-[#1D4ED8] focus:outline-none disabled:opacity-60"
               >
                 {books.map((b) => (
                   <option key={b.slug} value={b.slug}>
@@ -400,7 +400,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
             <div>
               <label
                 htmlFor="voice-persona-select"
-                className="block text-xs font-mono uppercase tracking-wider text-[#57554F] mb-2"
+                className="block text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-2"
               >
                 Mentor Voice
               </label>
@@ -409,7 +409,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                 value={selectedVoice}
                 disabled={status === 'live' || status === 'connecting'}
                 onChange={(e) => setSelectedVoice(e.target.value)}
-                className="w-full min-h-[44px] px-3 py-2 text-sm bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-[#141413] focus:border-[#D94E1F] focus:outline-none disabled:opacity-60"
+                className="w-full min-h-[44px] px-3 py-2 text-sm bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-[#0F141E] focus:border-[#1D4ED8] focus:outline-none disabled:opacity-60"
               >
                 {VOICE_OPTIONS.map((v) => (
                   <option key={v.id} value={v.id}>
@@ -420,10 +420,10 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
             </div>
 
             {/* Live Waveform Monitor */}
-            <div className="p-4 bg-[#FAF9F6] border border-[#E2E0D8] rounded-md">
+            <div className="p-4 bg-[#F6F7F9] border border-[#DDE2EA] rounded-md">
               <div className="flex items-center justify-between text-xs font-mono mb-2">
-                <span className="text-[#57554F]">AUDIO MONITOR</span>
-                <span className="text-[#141413] font-semibold uppercase">
+                <span className="text-[#4E5869]">AUDIO MONITOR</span>
+                <span className="text-[#0F141E] font-semibold uppercase">
                   {status === 'live'
                     ? muted
                       ? 'MIC MUTED'
@@ -437,14 +437,14 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                 ref={waveCanvasRef}
                 width={360}
                 height={64}
-                className="w-full h-16 rounded border border-[#E2E0D8] bg-[#FAF9F6]"
+                className="w-full h-16 rounded border border-[#DDE2EA] bg-[#F6F7F9]"
               />
             </div>
 
             {errorMsg && (
               <div
                 role="alert"
-                className="p-3.5 border border-[#D94E1F] bg-[#FAF9F6] rounded text-sm text-[#141413]"
+                className="p-3.5 border border-[#1D4ED8] bg-[#F6F7F9] rounded text-sm text-[#0F141E]"
               >
                 {errorMsg}
               </div>
@@ -456,7 +456,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                 <button
                   type="button"
                   onClick={() => void connectLive()}
-                  className="flex-1 min-h-[46px] px-5 py-2.5 bg-[#D94E1F] text-[#FAF9F6] text-sm font-semibold rounded-md hover:bg-[#B83E16] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
+                  className="flex-1 min-h-[46px] px-5 py-2.5 bg-[#1D4ED8] text-[#F6F7F9] text-sm font-semibold rounded-md hover:bg-[#1E40AF] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Radio className="w-4 h-4" />
                   <span>Start Voice Session</span>
@@ -466,15 +466,15 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                   <button
                     type="button"
                     onClick={() => setMuted((m) => !m)}
-                    className="flex-1 min-h-[46px] px-4 py-2.5 border border-[#141413] bg-white text-[#141413] text-sm font-medium rounded-md hover:bg-[#F3F1EA] inline-flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 min-h-[46px] px-4 py-2.5 border border-[#0F141E] bg-white text-[#0F141E] text-sm font-medium rounded-md hover:bg-[#ECEEF2] inline-flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    {muted ? <MicOff className="w-4 h-4 text-[#D94E1F]" /> : <Mic className="w-4 h-4" />}
+                    {muted ? <MicOff className="w-4 h-4 text-[#1D4ED8]" /> : <Mic className="w-4 h-4" />}
                     <span>{muted ? 'Unmute Mic' : 'Mute Mic'}</span>
                   </button>
                   <button
                     type="button"
                     onClick={disconnect}
-                    className="min-h-[46px] px-4 py-2.5 bg-[#141413] text-[#FAF9F6] text-sm font-semibold rounded-md hover:bg-[#D94E1F] inline-flex items-center justify-center gap-2 cursor-pointer"
+                    className="min-h-[46px] px-4 py-2.5 bg-[#0F141E] text-[#F6F7F9] text-sm font-semibold rounded-md hover:bg-[#1D4ED8] inline-flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <PhoneOff className="w-4 h-4" />
                     <span>End</span>
@@ -485,8 +485,8 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
           </div>
 
           {/* Spoken Quick Drill Starters */}
-          <div className="border border-[#E2E0D8] bg-white rounded-lg p-5">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-[#57554F] mb-3">
+          <div className="border border-[#DDE2EA] bg-white rounded-lg p-5">
+            <h2 className="text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-3">
               Quick Voice Drill Starters
             </h2>
             <div className="space-y-2">
@@ -496,7 +496,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                   type="button"
                   disabled={status !== 'live'}
                   onClick={() => sendTextPrompt(drill)}
-                  className="w-full text-left p-3 text-sm bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-[#141413] hover:border-[#D94E1F] disabled:opacity-55 transition-colors cursor-pointer"
+                  className="w-full text-left p-3 text-sm bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-[#0F141E] hover:border-[#1D4ED8] disabled:opacity-55 transition-colors cursor-pointer"
                 >
                   {drill}
                 </button>
@@ -506,11 +506,11 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
         </section>
 
         {/* Right Column: Live Conversation Transcript + Text Side-Channel */}
-        <section className="lg:col-span-7 border border-[#E2E0D8] bg-white rounded-lg p-5 sm:p-6 flex flex-col min-h-[520px]">
-          <div className="flex items-center justify-between gap-2 pb-4 mb-4 border-b border-[#E2E0D8]">
+        <section className="lg:col-span-7 border border-[#DDE2EA] bg-white rounded-lg p-5 sm:p-6 flex flex-col min-h-[520px]">
+          <div className="flex items-center justify-between gap-2 pb-4 mb-4 border-b border-[#DDE2EA]">
             <div className="flex items-center gap-2">
-              <Volume2 className="w-4 h-4 text-[#D94E1F]" />
-              <h2 className="font-serif text-xl font-semibold text-[#141413]">
+              <Volume2 className="w-4 h-4 text-[#1D4ED8]" />
+              <h2 className="font-serif text-xl font-semibold text-[#0F141E]">
                 Live Session Transcript
               </h2>
             </div>
@@ -518,7 +518,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
               <button
                 type="button"
                 onClick={() => setTranscript([])}
-                className="text-xs font-mono text-[#57554F] hover:text-[#141413] underline cursor-pointer"
+                className="text-xs font-mono text-[#4E5869] hover:text-[#0F141E] underline cursor-pointer"
               >
                 Clear Log
               </button>
@@ -527,8 +527,8 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
 
           <div className="flex-1 overflow-y-auto space-y-4 mb-5 max-h-[380px] pr-1">
             {transcript.length === 0 ? (
-              <div className="p-6 bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-sm text-[#57554F] leading-relaxed">
-                Click <strong className="text-[#141413]">Start Voice Session</strong>, grant
+              <div className="p-6 bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-sm text-[#4E5869] leading-relaxed">
+                Click <strong className="text-[#0F141E]">Start Voice Session</strong>, grant
                 microphone access, and speak naturally. You can interrupt the mentor mid-sentence
                 at any time—playback clears automatically.
               </div>
@@ -538,14 +538,14 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                   key={entry.id}
                   className={`p-4 rounded-md border ${
                     entry.role === 'mentor'
-                      ? 'bg-[#FAF9F6] border-[#141413]'
-                      : 'bg-white border-[#E2E0D8]'
+                      ? 'bg-[#F6F7F9] border-[#0F141E]'
+                      : 'bg-white border-[#DDE2EA]'
                   }`}
                 >
-                  <div className="text-[11px] font-mono uppercase tracking-wider text-[#D94E1F] mb-1">
+                  <div className="text-[11px] font-mono uppercase tracking-wider text-[#1D4ED8] mb-1">
                     {entry.role === 'mentor' ? `James Walker AI (${selectedVoice})` : 'You'}
                   </div>
-                  <p className="text-[15px] leading-relaxed text-[#141413]">{entry.text}</p>
+                  <p className="text-[15px] leading-relaxed text-[#0F141E]">{entry.text}</p>
                 </div>
               ))
             )}
@@ -557,7 +557,7 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
               e.preventDefault();
               sendTextPrompt(textNudge);
             }}
-            className="pt-4 border-t border-[#E2E0D8] flex items-center gap-2"
+            className="pt-4 border-t border-[#DDE2EA] flex items-center gap-2"
           >
             <input
               type="text"
@@ -569,12 +569,12 @@ export const VoiceMentor: React.FC<VoiceMentorProps> = ({ books, xp }) => {
                   ? 'Or paste a short prompt line to discuss aloud...'
                   : 'Connect voice session to talk or send a prompt line...'
               }
-              className="flex-1 min-h-[44px] px-3.5 py-2 text-sm bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-[#141413] focus:border-[#D94E1F] focus:outline-none disabled:opacity-60"
+              className="flex-1 min-h-[44px] px-3.5 py-2 text-sm bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-[#0F141E] focus:border-[#1D4ED8] focus:outline-none disabled:opacity-60"
             />
             <button
               type="submit"
               disabled={status !== 'live' || !textNudge.trim()}
-              className="min-h-[44px] px-4 py-2 bg-[#141413] text-[#FAF9F6] text-sm font-medium rounded-md hover:bg-[#D94E1F] disabled:opacity-50 inline-flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
+              className="min-h-[44px] px-4 py-2 bg-[#0F141E] text-[#F6F7F9] text-sm font-medium rounded-md hover:bg-[#1D4ED8] disabled:opacity-50 inline-flex items-center gap-1.5 whitespace-nowrap cursor-pointer"
             >
               <Send className="w-4 h-4" />
               <span>Send</span>

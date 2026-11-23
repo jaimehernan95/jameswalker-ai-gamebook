@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  typecheck-and-build:
+  typecheck-test-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,13 +17,41 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Typecheck (tsc --noEmit)
         run: npm run lint
+
+      - name: Validate playbook chapter graphs
+        run: |
+          npx tsx -e "
+            import { getProjectedBooks, getChapterBundle } from './server/booksData.ts';
+            const books = getProjectedBooks();
+            if (books.length < 4) throw new Error('Expected at least 4 books');
+            let validatedChapters = 0;
+            for (const b of books) {
+              if (b.free_chapters < 2) throw new Error(b.slug + ' must have at least 2 free chapters');
+              for (const chNum of [1, 2, 3]) {
+                const res = getChapterBundle(b.slug, chNum, [b.slug]);
+                if (chNum <= 2 && res.status !== 200) {
+                  throw new Error('Missing free chapter ' + chNum + ' for ' + b.slug);
+                }
+                if (res.status !== 200) continue;
+                validatedChapters++;
+                const nodes = res.data.nodes;
+                for (const [id, node] of Object.entries(nodes)) {
+                  for (const choice of node.choices ?? []) {
+                    if (choice.nextNodeId && !nodes[choice.nextNodeId]) {
+                      throw new Error('Dangling nextNodeId ' + choice.nextNodeId + ' in ' + b.slug + ' ch ' + chNum + ' node ' + id);
+                    }
+                  }
+                }
+              }
+            }
+            console.log('Validated', books.length, 'books and', validatedChapters, 'branching chapter graphs.');
+          "
 
       - name: Build production bundle
         run: npm run build

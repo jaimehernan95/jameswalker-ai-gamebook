@@ -5,7 +5,12 @@ let cachedClient: GoogleGenAI | null = null;
 
 function getConfiguredApiKey(): string | null {
   const raw = process.env.GEMINI_API_KEY?.trim();
-  if (!raw || raw === 'MY_GEMINI_API_KEY') return null;
+  if (
+    !raw ||
+    /^(MY_GEMINI_API_KEY|demo|test|placeholder|your[_-].*)$/i.test(raw)
+  ) {
+    return null;
+  }
   return raw;
 }
 

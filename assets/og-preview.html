@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OG Social Preview (1280×640) — James Walker AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #0b0f17;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
+      }
+      /* Exact 1280x640 Open Graph & GitHub Social Preview Frame */
+      .og-card {
+        width: 1280px;
+        height: 640px;
+        background: #f6f7f9;
+        background-image:
+          linear-gradient(to right, rgba(15, 20, 30, 0.045) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(15, 20, 30, 0.045) 1px, transparent 1px);
+        background-size: 48px 48px;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1.12fr 0.88fr;
+        padding: 56px 64px;
+        color: #0f141e;
+      }
+      .top-rule {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: linear-gradient(90deg, #1d4ed8 0%, #1d4ed8 72%, #b89352 72%, #b89352 100%);
+      }
+      .left-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-right: 36px;
+        z-index: 2;
+      }
+      .brand-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 17px;
+        font-weight: 600;
+        color: #1d4ed8;
+      }
+      .brand-divider {
+        color: #94a3b8;
+      }
+      .brand-muted {
+        color: #4e5869;
+        font-weight: 500;
+      }
+      h1 {
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 62px;
+        line-height: 1.06;
+        letter-spacing: -0.025em;
+        color: #0f141e;
+        margin-bottom: 20px;
+      }
+      .lead {
+        font-size: 22px;
+        line-height: 1.48;
+        color: #4e5869;
+        max-width: 580px;
+      }
+      .specs {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+        color: #0f141e;
+        padding-top: 22px;
+        border-top: 1px solid #dde2ea;
+      }
+      .specs span.dot {
+        color: #b89352;
+      }
+      .url-line {
+        margin-top: 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1d4ed8;
+      }
+
+      /* Right Column: 3D Perspective Gallery Hardcover Books Showcase */
+      .right-col {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1200px;
+      }
+      .stage-glow {
+        position: absolute;
+        width: 440px;
+        height: 440px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(29, 78, 216, 0.12) 0%, rgba(246, 247, 249, 0) 70%);
+      }
+      .book-fan {
+        position: relative;
+        width: 460px;
+        height: 450px;
+      }
+      .book {
+        position: absolute;
+        width: 228px;
+        height: 316px;
+        border-radius: 6px 12px 12px 6px;
+        padding: 22px 22px 20px 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 24px 48px rgba(15, 20, 30, 0.22);
+      }
+      .book::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 14px;
+        border-radius: 6px 0 0 6px;
+      }
+      .book-back-left {
+        top: 56px;
+        left: 0;
+        background: #111b2e;
+        color: #ffffff;
+        transform: rotateY(16deg) rotateZ(-6deg) scale(0.88);
+        border: 1px solid #263754;
+      }
+      .book-back-left::before {
+        background: #d4af6a;
+      }
+      .book-back-right {
+        top: 56px;
+        right: 0;
+        background: #122624;
+        color: #ffffff;
+        transform: rotateY(-16deg) rotateZ(6deg) scale(0.88);
+        border: 1px solid #224440;
+      }
+      .book-back-right::before {
+        background: #d9b77a;
+      }
+      .book-hero {
+        top: 42px;
+        left: 116px;
+        width: 248px;
+        height: 344px;
+        background: #ffffff;
+        color: #0f141e;
+        border: 1px solid #cfd6e2;
+        z-index: 3;
+        box-shadow: 0 32px 64px rgba(15, 20, 30, 0.26);
+      }
+      .book-hero::before {
+        background: #1d4ed8;
+        width: 18px;
+      }
+      .b-kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+      .b-title {
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 30px;
+        line-height: 1.08;
+        font-weight: 700;
+        margin-top: 10px;
+      }
+      .book-hero .b-title {
+        font-size: 36px;
+      }
+      .b-bars {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        height: 70px;
+        background: #eff4ff;
+        padding: 12px;
+        border-radius: 6px;
+      }
+      .b-bars div {
+        background: #1d4ed8;
+        border-radius: 3px;
+      }
+      .b-bars div:nth-child(2) { opacity: 0.55; }
+      .b-bars div:nth-child(3) { opacity: 0.35; }
+      .b-bars div:nth-child(4) { opacity: 0.2; }
+      .b-band {
+        background: #1d4ed8;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 10px 12px;
+        border-radius: 4px;
+        text-align: center;
+      }
+      .b-band-gold {
+        background: #d4af6a;
+        color: #0f141e;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="og-card">
+      <div class="top-rule"></div>
+
+      <section class="left-col">
+        <div class="brand-row">
+          <span>James Walker AI</span>
+          <span class="brand-divider">·</span>
+          <span class="brand-muted">Open-Source MIT</span>
+        </div>
+
+        <div>
+          <h1>3D Interactive AI Playbook Studio</h1>
+          <p class="lead">
+            Pick a hardcover in 3D, highlight pages by hand, test live tech cases, and play 2 free
+            AI workplace simulation chapters per book.
+          </p>
+        </div>
+
+        <div>
+          <div class="specs">
+            <span>Three.js Studio</span>
+            <span class="dot">·</span>
+            <span>React 19 + TS</span>
+            <span class="dot">·</span>
+            <span>Gemini Prompt Duel &amp; Voice</span>
+          </div>
+          <div class="url-line">jameswalker-ai-gamebook.onrender.com</div>
+        </div>
+      </section>
+
+      <section class="right-col">
+        <div class="stage-glow"></div>
+        <div class="book-fan">
+          <div class="book book-back-left">
+            <div>
+              <div class="b-kicker" style="color: #d4af6a">VOL. 02 · WORKPLACE</div>
+              <div class="b-title">ChatGPT for Your 9-to-5</div>
+            </div>
+            <div class="b-band b-band-gold">2 Free Chapters</div>
+          </div>
+
+          <div class="book book-back-right">
+            <div>
+              <div class="b-kicker" style="color: #d9b77a">VOL. 03 · SYSTEMS</div>
+              <div class="b-title">AI Workflow Architect</div>
+            </div>
+            <div class="b-band b-band-gold">2 Free Chapters</div>
+          </div>
+
+          <div class="book book-hero">
+            <div>
+              <div class="b-kicker" style="color: #1d4ed8">VOL. 01 · 2026 FLAGSHIP</div>
+              <div class="b-title">AI for Online Work</div>
+            </div>
+            <div class="b-bars">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div class="b-band">2 Free Chapters · Open Book</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

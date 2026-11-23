@@ -14,6 +14,12 @@ import {
   PDF_REVAMP_CHECKLIST,
   QR_EXERCISES,
 } from './server/dispatchData.ts';
+import {
+  claimAuthorPasscode,
+  getAuthorAuthStatus,
+  verifyAuthorBearerHeader,
+  verifyAuthorPasscode,
+} from './server/authorAuth.ts';
 import { evaluatePromptChallenge, streamSandboxPrompt } from './server/gemini.ts';
 import { attachLiveBridge } from './server/liveBridge.ts';
 import { progressStore } from './server/progressStore.ts';
@@ -24,10 +30,17 @@ dotenv.config();
 const PORT = Number(process.env.PORT) || 3000;
 const CACHE_READ_HEADER = 'public, max-age=3600, stale-while-revalidate=86400';
 
-// Lightweight sliding-window rate limiter per IP for AI endpoints
+// Lightweight sliding-window rate limiter per IP for API endpoints
 const rateWindows = new Map<string, number[]>();
 function isRateLimited(ip: string, limit = 25, windowMs = 60_000): boolean {
   const now = Date.now();
+  if (rateWindows.size > 1000) {
+    for (const [key, list] of rateWindows.entries()) {
+      const fresh = list.filter((t) => now - t < windowMs);
+      if (fresh.length === 0) rateWindows.delete(key);
+      else rateWindows.set(key, fresh);
+    }
+  }
   const stamps = (rateWindows.get(ip) ?? []).filter((t) => now - t < windowMs);
   if (stamps.length >= limit) {
     rateWindows.set(ip, stamps);
@@ -36,6 +49,108 @@ function isRateLimited(ip: string, limit = 25, windowMs = 60_000): boolean {
   stamps.push(now);
   rateWindows.set(ip, stamps);
   return false;
+}
+
+const READER_ID_RE = /^[a-zA-Z0-9_-]{4,64}$/;
+
+function clampInt(val: unknown, min: number, max: number, fallback = 0): number {
+  const n = Number(val);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.max(min, Math.min(max, Math.round(n)));
+}
+
+function sanitizeStringArray(val: unknown, maxItems: number, maxLen: number): string[] {
+  if (!Array.isArray(val)) return [];
+  return val
+    .slice(0, maxItems)
+    .filter((item): item is string => typeof item === 'string')
+    .map((s) => s.trim().slice(0, maxLen))
+    .filter(Boolean);
+}
+
+function sanitizeReaderProgress(raw: unknown): ReaderProgress | null {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+  const obj = raw as Record<string, unknown>;
+  const readerId = typeof obj.readerId === 'string' ? obj.readerId.trim() : '';
+  if (!READER_ID_RE.test(readerId) || typeof obj.xp !== 'number' || !Number.isFinite(obj.xp)) {
+    return null;
+  }
+
+  const rawSkills =
+    obj.skills && typeof obj.skills === 'object' ? (obj.skills as Record<string, unknown>) : {};
+  const earnedRanks = Array.isArray(obj.earnedRanks)
+    ? obj.earnedRanks.slice(0, 64).flatMap((entry) => {
+        if (!entry || typeof entry !== 'object') return [];
+        const r = entry as Record<string, unknown>;
+        return [
+          {
+            bookSlug: String(r.bookSlug ?? '').slice(0, 64),
+            chapterNum: clampInt(r.chapterNum, 1, 99, 1),
+            rankTitle: String(r.rankTitle ?? '').slice(0, 80),
+            badgeCode: String(r.badgeCode ?? '').slice(0, 40),
+            earnedAt: String(r.earnedAt ?? new Date().toISOString()).slice(0, 40),
+          },
+        ];
+      })
+    : [];
+
+  const bookStates: ReaderProgress['bookStates'] = {};
+  if (obj.bookStates && typeof obj.bookStates === 'object' && !Array.isArray(obj.bookStates)) {
+    const entries = Object.entries(obj.bookStates as Record<string, unknown>).slice(0, 20);
+    for (const [slug, stateVal] of entries) {
+      if (!/^[a-z0-9-]{2,64}$/.test(slug) || !stateVal || typeof stateVal !== 'object') continue;
+      const st = stateVal as Record<string, unknown>;
+      const rawHud = st.hud && typeof st.hud === 'object' ? (st.hud as Record<string, unknown>) : {};
+      const history = Array.isArray(st.history)
+        ? st.history.slice(-30).flatMap((h) => {
+            if (!h || typeof h !== 'object') return [];
+            const item = h as Record<string, unknown>;
+            return [
+              {
+                nodeId: String(item.nodeId ?? '').slice(0, 64),
+                choiceLabel: String(item.choiceLabel ?? '').slice(0, 200),
+                consequence: String(item.consequence ?? '').slice(0, 400),
+                xpDelta: clampInt(item.xpDelta, -500, 1000, 0),
+              },
+            ];
+          })
+        : [];
+      bookStates[slug] = {
+        chapterNum: clampInt(st.chapterNum, 1, 99, 1),
+        currentNodeId: String(st.currentNodeId ?? '').slice(0, 64),
+        hud: {
+          trust: clampInt(rawHud.trust, 0, 100, 50),
+          minsLeft: clampInt(rawHud.minsLeft, 0, 1000, 60),
+          leverage: clampInt(rawHud.leverage, 0, 100, 50),
+        },
+        history,
+        lastBossScore:
+          typeof st.lastBossScore === 'number'
+            ? clampInt(st.lastBossScore, 0, 100, 0)
+            : undefined,
+        updatedAt: String(st.updatedAt ?? new Date().toISOString()).slice(0, 40),
+      };
+    }
+  }
+
+  return {
+    readerId,
+    xp: clampInt(obj.xp, 0, 1_000_000, 0),
+    streakDays: clampInt(obj.streakDays, 0, 3650, 1),
+    lastActiveDate: String(obj.lastActiveDate ?? new Date().toISOString().slice(0, 10)).slice(0, 32),
+    skills: {
+      clarity: clampInt(rawSkills.clarity, 0, 1000, 0),
+      context: clampInt(rawSkills.context, 0, 1000, 0),
+      constraint: clampInt(rawSkills.constraint, 0, 1000, 0),
+      verification: clampInt(rawSkills.verification, 0, 1000, 0),
+    },
+    unlockedBooks: sanitizeStringArray(obj.unlockedBooks, 32, 64),
+    unlockedCodes: sanitizeStringArray(obj.unlockedCodes, 32, 64),
+    completedChapters: sanitizeStringArray(obj.completedChapters, 128, 80),
+    earnedRanks,
+    bookStates,
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 function getClientIp(req: Request): string {
@@ -76,14 +191,21 @@ function formatGeminiError(err: unknown): { status: number; message: string } {
       message: 'Gemini model is temporarily experiencing high demand. Please retry in a few seconds.',
     };
   }
+  console.error('[Gemini] Upstream error:', raw);
   return {
     status: 502,
-    message: `Prompt evaluation service error: ${raw}`,
+    message: 'Prompt evaluation service is temporarily unavailable. Please retry in a moment.',
   };
 }
 
 async function startServer() {
   const app = express();
+  app.disable('x-powered-by');
+  app.use((_req, res, next) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    next();
+  });
   app.use(express.json({ limit: '256kb' }));
 
   // 0. Health Check (Render / Cloud Run / Koyeb zero-downtime probe)
@@ -145,11 +267,15 @@ async function startServer() {
 
   // 5. Gumroad License / Unlock Key Validation
   app.post('/api/unlock', (req: Request, res: Response) => {
+    if (isRateLimited(getClientIp(req), 20, 60_000)) {
+      res.status(429).json({ error: 'Too many unlock attempts. Please wait a minute.' });
+      return;
+    }
     const code = String(req.body?.code ?? '')
       .trim()
       .toUpperCase();
-    if (!code) {
-      res.status(400).json({ error: 'Please enter a Gumroad unlock code.' });
+    if (!code || code.length > 64) {
+      res.status(400).json({ error: 'Please enter a valid Gumroad unlock code.' });
       return;
     }
     const match = UNLOCK_CODES[code];
@@ -176,17 +302,17 @@ async function startServer() {
       return;
     }
 
-    const promptText = String(req.body?.promptText ?? '').trim();
-    const challengeTitle = String(req.body?.challengeTitle ?? 'Prompt Challenge').trim();
-    const roleBrief = String(req.body?.roleBrief ?? '').trim();
+    const promptText = String(req.body?.promptText ?? '').trim().slice(0, 8000);
+    const challengeTitle = String(req.body?.challengeTitle ?? 'Prompt Challenge').trim().slice(0, 160);
+    const roleBrief = String(req.body?.roleBrief ?? '').trim().slice(0, 1200);
     const constraints = Array.isArray(req.body?.constraints)
-      ? req.body.constraints.map(String)
+      ? req.body.constraints.slice(0, 12).map((s: unknown) => String(s).slice(0, 240))
       : [];
     const rubricFocus = Array.isArray(req.body?.rubricFocus)
-      ? req.body.rubricFocus.map(String)
+      ? req.body.rubricFocus.slice(0, 12).map((s: unknown) => String(s).slice(0, 240))
       : [];
-    const passingScore = Number(req.body?.passingScore ?? 70);
-    const xpReward = Number(req.body?.xpReward ?? 75);
+    const passingScore = clampInt(req.body?.passingScore ?? 70, 0, 100, 70);
+    const xpReward = clampInt(req.body?.xpReward ?? 75, 0, 500, 75);
 
     if (promptText.length < 15) {
       res.status(400).json({
@@ -220,8 +346,8 @@ async function startServer() {
       return;
     }
 
-    const userPrompt = String(req.body?.userPrompt ?? '').trim();
-    const sampleInput = String(req.body?.sampleInput ?? '').trim();
+    const userPrompt = String(req.body?.userPrompt ?? '').trim().slice(0, 8000);
+    const sampleInput = String(req.body?.sampleInput ?? '').trim().slice(0, 12000);
 
     if (userPrompt.length < 10) {
       res.status(400).json({ error: 'Enter a prompt of at least 10 characters to test.' });
@@ -247,7 +373,12 @@ async function startServer() {
 
   // 8. Lightweight Debounced Progress Sync
   app.get('/api/progress/:readerId', (req: Request, res: Response) => {
-    const existing = progressStore.get(req.params.readerId);
+    const readerId = String(req.params.readerId ?? '').trim();
+    if (!READER_ID_RE.test(readerId)) {
+      res.status(400).json({ error: 'Invalid reader identifier.' });
+      return;
+    }
+    const existing = progressStore.get(readerId);
     if (!existing) {
       res.status(404).json({ error: 'No synced progress found.' });
       return;
@@ -256,12 +387,16 @@ async function startServer() {
   });
 
   app.post('/api/progress', (req: Request, res: Response) => {
-    const body = req.body as Partial<ReaderProgress> | undefined;
-    if (!body?.readerId || typeof body.xp !== 'number') {
+    if (isRateLimited(getClientIp(req), 40, 60_000)) {
+      res.status(429).json({ error: 'Too many sync requests. Please wait a moment.' });
+      return;
+    }
+    const sanitized = sanitizeReaderProgress(req.body);
+    if (!sanitized) {
       res.status(400).json({ error: 'Invalid progress payload.' });
       return;
     }
-    const saved = progressStore.upsert(body as ReaderProgress);
+    const saved = progressStore.upsert(sanitized);
     res.json({ ok: true, updatedAt: saved.updatedAt });
   });
 
@@ -276,19 +411,62 @@ async function startServer() {
     });
   });
 
+  app.get('/api/dispatches/auth-status', (_req: Request, res: Response) => {
+    res.setHeader('Cache-Control', 'no-store');
+    res.json(getAuthorAuthStatus());
+  });
+
+  app.post('/api/dispatches/claim-author', (req: Request, res: Response) => {
+    if (isRateLimited(getClientIp(req), 5, 60_000)) {
+      res.status(429).json({ error: 'Too many setup attempts. Please wait a minute.' });
+      return;
+    }
+    const passcode = typeof req.body?.passcode === 'string' ? req.body.passcode : '';
+    const result = claimAuthorPasscode(passcode);
+    if (!result.ok) {
+      res.status(result.status).json({ error: result.error });
+      return;
+    }
+    res.status(201).json({ ok: true, token: result.token });
+  });
+
+  app.post('/api/dispatches/verify', (req: Request, res: Response) => {
+    if (isRateLimited(getClientIp(req), 10, 60_000)) {
+      res.status(429).json({ error: 'Too many verification attempts. Please wait a minute.' });
+      return;
+    }
+    const passcode = typeof req.body?.passcode === 'string' ? req.body.passcode : '';
+    const result = verifyAuthorPasscode(passcode);
+    if (!result.ok) {
+      res.status(result.status).json({ error: result.error });
+      return;
+    }
+    res.json({ ok: true, token: result.token });
+  });
+
   app.post('/api/dispatches', (req: Request, res: Response) => {
-    const title = String(req.body?.title ?? '').trim();
-    const summary = String(req.body?.summary ?? '').trim();
+    if (!verifyAuthorBearerHeader(req.headers.authorization)) {
+      res.status(401).json({
+        error: 'Author sign-in required to publish Living Dispatch issues.',
+      });
+      return;
+    }
+    if (isRateLimited(getClientIp(req), 10, 60_000)) {
+      res.status(429).json({ error: 'Too many publish requests. Please wait a minute.' });
+      return;
+    }
+    const title = String(req.body?.title ?? '').trim().slice(0, 160);
+    const summary = String(req.body?.summary ?? '').trim().slice(0, 1200);
     const cadenceRaw = String(req.body?.cadence ?? 'Weekly Update').trim();
     const cadence: DispatchIssue['cadence'] =
       cadenceRaw === 'Monthly Deep Dive' || cadenceRaw === 'Policy Alert'
         ? cadenceRaw
         : 'Weekly Update';
-    const replacesPdfPages = String(req.body?.replacesPdfPages ?? '').trim();
+    const replacesPdfPages = String(req.body?.replacesPdfPages ?? '').trim().slice(0, 80);
     const highlights = Array.isArray(req.body?.highlights)
-      ? req.body.highlights.map(String).map((s: string) => s.trim()).filter(Boolean)
+      ? req.body.highlights.slice(0, 8).map(String).map((s: string) => s.trim().slice(0, 240)).filter(Boolean)
       : [];
-    const bookSlug = req.body?.bookSlug ? String(req.body.bookSlug).trim() : undefined;
+    const bookSlug = req.body?.bookSlug ? String(req.body.bookSlug).trim().slice(0, 80) : undefined;
     const chapterNum = req.body?.chapterNum ? Number(req.body.chapterNum) : undefined;
 
     if (title.length < 5 || summary.length < 15) {
@@ -309,8 +487,12 @@ async function startServer() {
   });
 
   app.post('/api/newsletter/subscribe', (req: Request, res: Response) => {
-    const email = String(req.body?.email ?? '').trim();
-    const chosenPath = String(req.body?.chosenPath ?? 'Digital Products').trim();
+    if (isRateLimited(getClientIp(req), 10, 60_000)) {
+      res.status(429).json({ error: 'Too many subscribe requests. Please wait a minute.' });
+      return;
+    }
+    const email = String(req.body?.email ?? '').trim().slice(0, 254);
+    const chosenPath = String(req.body?.chosenPath ?? 'Digital Products').trim().slice(0, 80);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       res.status(400).json({ error: 'Please enter a valid email address.' });
       return;
@@ -356,7 +538,11 @@ async function startServer() {
   });
 
   // WebSocket bridge for Gemini 3.8 Live API real-time voice conversations
-  const wss = new WebSocketServer({ server, path: '/api/live' });
+  const wss = new WebSocketServer({
+    server,
+    path: '/api/live',
+    maxPayload: 512 * 1024,
+  });
   attachLiveBridge(wss);
 
   const shutdown = () => {

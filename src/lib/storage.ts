@@ -6,9 +6,9 @@ import type {
 } from '../types/gamebook.ts';
 
 const PROGRESS_STORAGE_KEY = 'jwai_reader_progress_v1';
-const BOOKS_CACHE_KEY = 'jwai_books_summary_v3';
-const CHAPTER_CACHE_PREFIX = 'jwai_chapter_v3_';
-const API_SCHEMA_VERSION = 3;
+const BOOKS_CACHE_KEY = 'jwai_books_summary_v4';
+const CHAPTER_CACHE_PREFIX = 'jwai_chapter_v4_';
+const API_SCHEMA_VERSION = 4;
 
 const memoryChapterCache = new Map<string, ChapterBundle>();
 const inflightPrefetches = new Set<string>();

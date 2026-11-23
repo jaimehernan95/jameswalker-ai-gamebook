@@ -7,7 +7,12 @@ const ALLOWED_VOICES = new Set(['Zephyr', 'Kore', 'Puck', 'Charon', 'Fenrir']);
 
 function getConfiguredApiKey(): string | null {
   const raw = process.env.GEMINI_API_KEY?.trim();
-  if (!raw || raw === 'MY_GEMINI_API_KEY') return null;
+  if (
+    !raw ||
+    /^(MY_GEMINI_API_KEY|demo|test|placeholder|your[_-].*)$/i.test(raw)
+  ) {
+    return null;
+  }
   return raw;
 }
 
@@ -16,7 +21,7 @@ function buildMentorInstruction(bookSlug: string, xp: number): string {
   const focusBook = books.find((b) => b.slug === bookSlug);
   const focusContext = focusBook
     ? `The reader is currently focusing on "${focusBook.title}" (${focusBook.category}): ${focusBook.subtitle}`
-    : 'The reader is practicing across all three James Walker AI playbooks: ChatGPT for Your 9-to-5, AI Workflow Architect, and Prompt Engineering Field Manual.';
+    : 'The reader is practicing across all four James Walker AI playbooks: AI for Online Work, ChatGPT for Your 9-to-5, AI Workflow Architect, and Prompt Engineering Field Manual.';
 
   return [
     'You are James Walker AI, a sharp, pragmatic workplace AI and prompt-engineering voice mentor.',
@@ -33,24 +38,79 @@ function sendJson(ws: WebSocket, payload: Record<string, unknown>): void {
   }
 }
 
+const wsConnectWindows = new Map<string, number[]>();
+const activeSocketsPerIp = new Map<string, number>();
+const MAX_WS_CONNECTS_PER_MIN = 10;
+const MAX_CONCURRENT_WS_PER_IP = 2;
+const MAX_TEXT_FRAME_CHARS = 2000;
+const MAX_AUDIO_FRAME_CHARS = 262_144;
+
+function getWsClientIp(req: IncomingMessage): string {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string') return forwarded.split(',')[0].trim();
+  return req.socket.remoteAddress ?? 'local';
+}
+
+function isWsRateLimited(ip: string): boolean {
+  const now = Date.now();
+  if (wsConnectWindows.size > 1000) {
+    for (const [key, list] of wsConnectWindows.entries()) {
+      const fresh = list.filter((t) => now - t < 60_000);
+      if (fresh.length === 0) wsConnectWindows.delete(key);
+      else wsConnectWindows.set(key, fresh);
+    }
+  }
+  const stamps = (wsConnectWindows.get(ip) ?? []).filter((t) => now - t < 60_000);
+  if (stamps.length >= MAX_WS_CONNECTS_PER_MIN) {
+    wsConnectWindows.set(ip, stamps);
+    return true;
+  }
+  stamps.push(now);
+  wsConnectWindows.set(ip, stamps);
+  return false;
+}
+
 export function attachLiveBridge(wss: WebSocketServer): void {
   wss.on('connection', async (clientWs: WebSocket, req: IncomingMessage) => {
+    const ip = getWsClientIp(req);
+    if (isWsRateLimited(ip)) {
+      sendJson(clientWs, {
+        type: 'error',
+        message: 'Too many live voice connection attempts. Please wait a minute and retry.',
+      });
+      clientWs.close(1008, 'Rate limited');
+      return;
+    }
+
+    const currentActive = activeSocketsPerIp.get(ip) ?? 0;
+    if (currentActive >= MAX_CONCURRENT_WS_PER_IP) {
+      sendJson(clientWs, {
+        type: 'error',
+        message: 'Only 2 simultaneous Live Voice Mentor sessions are allowed per connection.',
+      });
+      clientWs.close(1008, 'Too many concurrent sessions');
+      return;
+    }
+
     const apiKey = getConfiguredApiKey();
     if (!apiKey) {
       sendJson(clientWs, {
         type: 'error',
         message:
-          'GEMINI_API_KEY is not configured in server secrets. Add a free Gemini API key in Settings > Secrets to use Live Voice Mentor.',
+          'GEMINI_API_KEY is not configured in server secrets. Add a free Gemini API key in server environment variables to use Live Voice Mentor.',
       });
       clientWs.close(1011, 'Missing GEMINI_API_KEY');
       return;
     }
 
+    activeSocketsPerIp.set(ip, currentActive + 1);
+
     const url = new URL(req.url || '/api/live', 'http://localhost');
     const requestedVoice = url.searchParams.get('voice') || 'Zephyr';
     const voiceName = ALLOWED_VOICES.has(requestedVoice) ? requestedVoice : 'Zephyr';
-    const bookSlug = url.searchParams.get('book') || 'all';
-    const xp = Number(url.searchParams.get('xp') || 0) || 0;
+    const bookSlug = (url.searchParams.get('book') || 'all').slice(0, 64);
+    const rawXp = Number(url.searchParams.get('xp') || 0);
+    const xp = Number.isFinite(rawXp) ? Math.max(0, Math.min(1_000_000, Math.round(rawXp))) : 0;
 
     const ai = new GoogleGenAI({
       apiKey,
@@ -67,6 +127,9 @@ export function attachLiveBridge(wss: WebSocketServer): void {
     const cleanup = () => {
       if (closed) return;
       closed = true;
+      const count = activeSocketsPerIp.get(ip) ?? 1;
+      if (count <= 1) activeSocketsPerIp.delete(ip);
+      else activeSocketsPerIp.set(ip, count - 1);
       try {
         session?.close();
       } catch {
@@ -135,9 +198,10 @@ export function attachLiveBridge(wss: WebSocketServer): void {
           },
           onerror: (err: unknown) => {
             const msg = err instanceof Error ? err.message : String(err);
+            console.error('[LiveBridge] Session error:', msg);
             sendJson(clientWs, {
               type: 'error',
-              message: `Gemini Live session error: ${msg}`,
+              message: 'Live Voice session encountered a temporary error. Please reconnect.',
             });
           },
           onclose: () => {
@@ -150,14 +214,16 @@ export function attachLiveBridge(wss: WebSocketServer): void {
       });
     } catch (err) {
       const raw = err instanceof Error ? err.message : String(err);
-      let friendly = `Could not connect to Gemini Live API: ${raw}`;
+      console.error('[LiveBridge] Connection failed:', raw);
+      let friendly = 'Could not connect to the Live Voice service right now. Please retry shortly.';
       if (/PERMISSION_DENIED|403|API_KEY_INVALID|400/i.test(raw)) {
         friendly =
-          'Gemini API key was rejected. Please verify your API key in Settings > Secrets.';
+          'Gemini API key was rejected. Please verify GEMINI_API_KEY in server environment variables.';
       } else if (/RESOURCE_EXHAUSTED|429/i.test(raw)) {
         friendly = 'Live API rate limit reached. Please wait a moment and reconnect.';
       }
       sendJson(clientWs, { type: 'error', message: friendly });
+      cleanup();
       clientWs.close(1011, 'Live connect failed');
       return;
     }
@@ -165,21 +231,23 @@ export function attachLiveBridge(wss: WebSocketServer): void {
     clientWs.on('message', (rawData) => {
       if (closed || !session) return;
       try {
-        const msg = JSON.parse(rawData.toString()) as {
+        const textPayload = rawData.toString();
+        if (textPayload.length > MAX_AUDIO_FRAME_CHARS + 4096) return;
+        const msg = JSON.parse(textPayload) as {
           type?: string;
-          audio?: string;
-          text?: string;
+          audio?: unknown;
+          text?: unknown;
         };
-        if (msg.audio) {
+        if (typeof msg.audio === 'string' && msg.audio.length > 0 && msg.audio.length <= MAX_AUDIO_FRAME_CHARS) {
           session.sendRealtimeInput({
             audio: {
               data: msg.audio,
               mimeType: 'audio/pcm;rate=16000',
             },
           });
-        } else if (msg.text && msg.text.trim()) {
+        } else if (typeof msg.text === 'string' && msg.text.trim()) {
           session.sendRealtimeInput({
-            text: msg.text.trim(),
+            text: msg.text.trim().slice(0, MAX_TEXT_FRAME_CHARS),
           });
         }
       } catch {

@@ -50,19 +50,24 @@ class ProgressStore {
           xp: Math.max(existing.xp, progress.xp),
           unlockedBooks: Array.from(
             new Set([...existing.unlockedBooks, ...progress.unlockedBooks]),
-          ),
+          ).slice(0, 32),
           unlockedCodes: Array.from(
             new Set([...existing.unlockedCodes, ...progress.unlockedCodes]),
-          ),
+          ).slice(0, 32),
           completedChapters: Array.from(
             new Set([...existing.completedChapters, ...progress.completedChapters]),
-          ),
+          ).slice(0, 128),
           updatedAt: new Date().toISOString(),
         }
       : {
           ...progress,
           updatedAt: new Date().toISOString(),
         };
+
+    if (!existing && this.cache.size >= 5000) {
+      const oldestKey = this.cache.keys().next().value;
+      if (oldestKey) this.cache.delete(oldestKey);
+    }
 
     this.cache.set(progress.readerId, merged);
     this.scheduleFlush();

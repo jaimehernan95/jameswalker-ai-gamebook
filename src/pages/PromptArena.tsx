@@ -144,16 +144,16 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
-      <div className="border-b border-[#E2E0D8] pb-6 mb-8">
-        <p className="text-xs font-mono uppercase tracking-wider text-[#57554F] mb-2">
+      <div className="border-b border-[#DDE2EA] pb-6 mb-8">
+        <p className="text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-2">
           Live Prompt Sandbox · Server-Proxied Streaming
         </p>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="font-serif text-3xl font-semibold text-[#141413] mb-2">
+            <h1 className="font-serif text-3xl font-semibold text-[#0F141E] mb-2">
               Prompt Arena
             </h1>
-            <p className="text-[16px] text-[#57554F] max-w-[65ch]">
+            <p className="text-[16px] text-[#4E5869] max-w-[65ch]">
               Test workplace prompts against real sample inputs with live streaming output, then
               score your prompt structure against the chapter rubric.
             </p>
@@ -170,8 +170,8 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
                   onClick={() => handleSelectPreset(preset)}
                   className={`min-h-[40px] px-3.5 py-2 text-xs font-medium rounded-md border transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                     active
-                      ? 'bg-[#141413] text-[#FAF9F6] border-[#141413]'
-                      : 'bg-white text-[#57554F] border-[#E2E0D8] hover:border-[#141413] hover:text-[#141413]'
+                      ? 'bg-[#0F141E] text-[#F6F7F9] border-[#0F141E]'
+                      : 'bg-white text-[#4E5869] border-[#DDE2EA] hover:border-[#0F141E] hover:text-[#0F141E]'
                   }`}
                 >
                   {preset.title}
@@ -186,25 +186,25 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Zone: Scenario Brief & Sample Input */}
           <section className="lg:col-span-5 space-y-5">
-            <div className="border border-[#E2E0D8] bg-white rounded-lg p-5 sm:p-6">
-              <div className="text-xs font-mono text-[#D94E1F] mb-1">
+            <div className="border border-[#DDE2EA] bg-white rounded-lg p-5 sm:p-6">
+              <div className="text-xs font-mono text-[#1D4ED8] mb-1">
                 {currentPreset.bookTitle}
               </div>
-              <h2 className="font-serif text-xl font-semibold text-[#141413] mb-2">
+              <h2 className="font-serif text-xl font-semibold text-[#0F141E] mb-2">
                 {currentPreset.title}
               </h2>
-              <p className="text-sm text-[#57554F] leading-relaxed mb-4">
+              <p className="text-sm text-[#4E5869] leading-relaxed mb-4">
                 {currentPreset.scenario}
               </p>
 
-              <div className="pt-4 border-t border-[#E2E0D8]">
-                <h3 className="text-xs font-mono uppercase tracking-wider text-[#57554F] mb-2.5">
+              <div className="pt-4 border-t border-[#DDE2EA]">
+                <h3 className="text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-2.5">
                   Target Rubric Constraints
                 </h3>
-                <ul className="space-y-1.5 text-sm text-[#141413]">
+                <ul className="space-y-1.5 text-sm text-[#0F141E]">
                   {currentPreset.constraints.map((c, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="font-mono text-xs text-[#D94E1F] mt-0.5">0{idx + 1}.</span>
+                      <span className="font-mono text-xs text-[#1D4ED8] mt-0.5">0{idx + 1}.</span>
                       <span>{c}</span>
                     </li>
                   ))}
@@ -212,10 +212,10 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
               </div>
             </div>
 
-            <div className="border border-[#E2E0D8] bg-white rounded-lg p-5 sm:p-6">
+            <div className="border border-[#DDE2EA] bg-white rounded-lg p-5 sm:p-6">
               <label
                 htmlFor="arena-sample-input"
-                className="block text-xs font-mono uppercase tracking-wider text-[#57554F] mb-2"
+                className="block text-xs font-mono uppercase tracking-wider text-[#4E5869] mb-2"
               >
                 Editable Test Input Sample
               </label>
@@ -224,22 +224,22 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
                 rows={5}
                 value={sampleInput}
                 onChange={(e) => setSampleInput(e.target.value)}
-                className="w-full p-3 font-mono text-xs leading-relaxed bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-[#141413] focus:border-[#D94E1F] focus:outline-none"
+                className="w-full p-3 font-mono text-xs leading-relaxed bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-[#0F141E] focus:border-[#1D4ED8] focus:outline-none"
               />
             </div>
           </section>
 
           {/* Right Zone: Prompt Workbench + Live Output + Rubric Score */}
           <section className="lg:col-span-7 space-y-5">
-            <div className="border border-[#E2E0D8] bg-white rounded-lg p-5 sm:p-6">
+            <div className="border border-[#DDE2EA] bg-white rounded-lg p-5 sm:p-6">
               <div className="flex items-center justify-between gap-2 mb-2">
-                <label htmlFor="arena-prompt-editor" className="text-sm font-semibold text-[#141413]">
+                <label htmlFor="arena-prompt-editor" className="text-sm font-semibold text-[#0F141E]">
                   Prompt Under Test
                 </label>
                 <button
                   type="button"
                   onClick={() => setPromptText(currentPreset.starterPrompt)}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-[#57554F] hover:text-[#141413] cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-[#4E5869] hover:text-[#0F141E] cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Reset Template</span>
@@ -251,7 +251,7 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
                 rows={6}
                 value={promptText}
                 onChange={(e) => setPromptText(e.target.value)}
-                className="w-full p-4 font-mono text-sm leading-relaxed bg-[#FAF9F6] border border-[#E2E0D8] rounded-md text-[#141413] focus:border-[#D94E1F] focus:outline-none mb-4"
+                className="w-full p-4 font-mono text-sm leading-relaxed bg-[#F6F7F9] border border-[#DDE2EA] rounded-md text-[#0F141E] focus:border-[#1D4ED8] focus:outline-none mb-4"
               />
 
               <div className="flex flex-wrap items-center gap-3">
@@ -259,7 +259,7 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
                   type="button"
                   onClick={handleStreamRun}
                   disabled={streaming || promptText.trim().length < 10}
-                  className="min-h-[44px] px-4 py-2.5 bg-[#D94E1F] text-[#FAF9F6] text-sm font-semibold rounded-md hover:bg-[#B83E16] active:scale-[0.99] transition-all inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="min-h-[44px] px-4 py-2.5 bg-[#1D4ED8] text-[#F6F7F9] text-sm font-semibold rounded-md hover:bg-[#1E40AF] active:scale-[0.99] transition-all inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   <Play className="w-4 h-4" />
                   <span>{streaming ? 'Streaming...' : 'Run Live Stream'}</span>
@@ -269,7 +269,7 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
                   type="button"
                   onClick={handleScoreRubric}
                   disabled={grading || promptText.trim().length < 15}
-                  className="min-h-[44px] px-4 py-2.5 bg-[#141413] text-[#FAF9F6] text-sm font-medium rounded-md hover:bg-[#141413]/85 active:scale-[0.99] transition-all inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer"
+                  className="min-h-[44px] px-4 py-2.5 bg-[#0F141E] text-[#F6F7F9] text-sm font-medium rounded-md hover:bg-[#0F141E]/85 active:scale-[0.99] transition-all inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
                   <ShieldCheck className="w-4 h-4" />
                   <span>{grading ? 'Scoring...' : 'Score Against Rubric'}</span>
@@ -278,51 +278,51 @@ export const PromptArena: React.FC<PromptArenaProps> = ({ onAwardXp }) => {
             </div>
 
             {/* Live Stream Output Box */}
-            <div className="border border-[#E2E0D8] bg-white rounded-lg p-5 sm:p-6">
+            <div className="border border-[#DDE2EA] bg-white rounded-lg p-5 sm:p-6">
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-xs font-mono uppercase tracking-wider text-[#57554F]">
+                <span className="text-xs font-mono uppercase tracking-wider text-[#4E5869]">
                   Model Output Stream
                 </span>
                 {streaming && (
-                  <span className="text-xs font-mono text-[#D94E1F]">Streaming response...</span>
+                  <span className="text-xs font-mono text-[#1D4ED8]">Streaming response...</span>
                 )}
               </div>
 
               {streamError && (
-                <div role="alert" className="p-3 border border-[#D94E1F] bg-[#FAF9F6] rounded text-sm text-[#141413] mb-3">
+                <div role="alert" className="p-3 border border-[#1D4ED8] bg-[#F6F7F9] rounded text-sm text-[#0F141E] mb-3">
                   {streamError}
                 </div>
               )}
 
-              <pre className="min-h-[140px] max-h-[320px] overflow-y-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-[#141413] bg-[#FAF9F6] border border-[#E2E0D8] rounded-md p-4">
+              <pre className="min-h-[140px] max-h-[320px] overflow-y-auto whitespace-pre-wrap font-mono text-xs leading-relaxed text-[#0F141E] bg-[#F6F7F9] border border-[#DDE2EA] rounded-md p-4">
                 {streamOutput || 'Click "Run Live Stream" to test your prompt on the sample input.'}
               </pre>
             </div>
 
             {/* Rubric Evaluation Card */}
             {gradeError && (
-              <div role="alert" className="p-4 border border-[#D94E1F] bg-white rounded-md text-sm text-[#141413]">
+              <div role="alert" className="p-4 border border-[#1D4ED8] bg-white rounded-md text-sm text-[#0F141E]">
                 {gradeError}
               </div>
             )}
 
             {gradeResult && (
-              <div className="border border-[#141413] bg-white rounded-lg p-5 sm:p-6">
-                <div className="flex items-baseline justify-between gap-4 pb-3 mb-3 border-b border-[#E2E0D8]">
+              <div className="border border-[#0F141E] bg-white rounded-lg p-5 sm:p-6">
+                <div className="flex items-baseline justify-between gap-4 pb-3 mb-3 border-b border-[#DDE2EA]">
                   <div>
-                    <div className="text-xs font-mono text-[#57554F] mb-0.5">
+                    <div className="text-xs font-mono text-[#4E5869] mb-0.5">
                       {gradeResult.source === 'gemini' ? gradeResult.model : 'Offline Rubric'}
                     </div>
-                    <h3 className="font-serif text-xl font-semibold text-[#141413]">
+                    <h3 className="font-serif text-xl font-semibold text-[#0F141E]">
                       {gradeResult.verdict}
                     </h3>
                   </div>
-                  <div className="font-mono text-2xl font-bold text-[#D94E1F] tabular-nums">
+                  <div className="font-mono text-2xl font-bold text-[#1D4ED8] tabular-nums">
                     {gradeResult.score} / 100
                   </div>
                 </div>
-                <p className="text-sm text-[#141413] mb-3">{gradeResult.strengths}</p>
-                <ul className="space-y-1 text-sm text-[#57554F]">
+                <p className="text-sm text-[#0F141E] mb-3">{gradeResult.strengths}</p>
+                <ul className="space-y-1 text-sm text-[#4E5869]">
                   {gradeResult.improvements.map((imp, idx) => (
                     <li key={idx}>• {imp}</li>
                   ))}
