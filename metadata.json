@@ -1,0 +1,6 @@
+{
+  "name": "James Walker AI — Interactive Game-Book",
+  "description": "Playable AI prompt playbooks and workplace scenario simulations, companion web app to jameswalkerai.gumroad.com.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
